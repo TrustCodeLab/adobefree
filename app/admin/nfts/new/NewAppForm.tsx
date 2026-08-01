@@ -34,7 +34,7 @@ export default function NewAppForm({ categories }: NewAppFormProps) {
   // Handle state updates (Error or Success)
   useEffect(() => {
     if (state.error) {
-      toast.error(state.error);n
+      toast.error(state.error);
     } else if (state.message) {
       toast.success(state.message);
       // Redirect after a short delay to allow toast to be seen
