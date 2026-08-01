@@ -73,9 +73,8 @@ export function MobileSidebar({ signOutAction }: MobileSidebarProps) {
 
       {/* Mobile Sidebar Drawer */}
       <aside
-        className={`lg:hidden fixed inset-y-0 left-0 w-64 bg-card border-r border-card-border flex flex-col z-40 transform transition-transform duration-300 ease-in-out ${
-          isOpen ? "translate-x-0" : "-translate-x-full"
-        }`}
+        className={`lg:hidden fixed inset-y-0 left-0 w-64 bg-card border-r border-card-border flex flex-col z-40 transform transition-transform duration-300 ease-in-out ${isOpen ? "translate-x-0" : "-translate-x-full"
+          }`}
       >
         <div className="p-6 border-b border-white/5 pt-16">
           <h1 className="text-xl font-bold text-white tracking-tight">
@@ -89,11 +88,10 @@ export function MobileSidebar({ signOutAction }: MobileSidebarProps) {
               key={link.href}
               href={link.href}
               onClick={() => setIsOpen(false)}
-              className={`flex items-center gap-3 px-6 py-3 rounded-full transition-all duration-200 group relative overflow-hidden ${
-                link.active
+              className={`flex items-center gap-3 px-6 py-3 rounded-full transition-all duration-200 group relative overflow-hidden ${link.active
                   ? "bg-white text-black font-bold shadow-lg shadow-white/10"
                   : "text-muted hover:text-white hover:bg-white/5"
-              }`}
+                }`}
             >
               <div className="relative z-10 flex items-center gap-3">
                 <link.icon

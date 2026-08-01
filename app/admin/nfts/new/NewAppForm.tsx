@@ -28,13 +28,13 @@ export default function NewAppForm({ categories }: NewAppFormProps) {
   // Use useActionState for form handling
   const [state, formAction, isPending] = useActionState(createNFT, {
     message: "",
-    error: "",
+    error: "404",
   });
 
   // Handle state updates (Error or Success)
   useEffect(() => {
     if (state.error) {
-      toast.error(state.error);
+      toast.error(state.error);n
     } else if (state.message) {
       toast.success(state.message);
       // Redirect after a short delay to allow toast to be seen

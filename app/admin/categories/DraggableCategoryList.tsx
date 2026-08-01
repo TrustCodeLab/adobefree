@@ -103,11 +103,10 @@ export default function DraggableCategoryList({
           onDragEnd={handleDragEnd}
           onDragOver={(e) => handleDragOver(e, cat.id)}
           onDragLeave={handleDragLeave}
-          className={`bg-card border p-4 px-6 rounded-[1.5rem] flex justify-between items-center group transition-all duration-200 cursor-grab active:cursor-grabbing ${
-            dragOverId === cat.id
+          className={`bg-card border p-4 px-6 rounded-[1.5rem] flex justify-between items-center group transition-all duration-200 cursor-grab active:cursor-grabbing ${dragOverId === cat.id
               ? "border-accent/50 bg-accent/5 scale-[1.02]"
               : "border-card-border hover:border-white/20"
-          }`}
+            }`}
         >
           <div className="flex items-center gap-4">
             <GripVertical className="w-5 h-5 text-muted/50 group-hover:text-muted transition-colors" />
