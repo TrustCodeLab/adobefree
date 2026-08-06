@@ -1,12 +1,11 @@
 import type { Metadata } from "next";
-import { Lato } from "next/font/google";
+import { Manrope } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "sonner";
 import { Analytics } from "@vercel/analytics/next";
 
-const lato = Lato({
-  variable: "--font-lato",
-  weight: ["300", "400", "700", "900"],
+const manrope = Manrope({
+  variable: "--font-manrope",
   subsets: ["latin"],
   display: "swap",
 });
@@ -83,7 +82,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${lato.variable} antialiased`}
+        className={`${manrope.variable} font-sans antialiased`}
       >
         <script
           type="application/ld+json"

@@ -25,7 +25,6 @@ export default function DraggableCategoryList({
   const handleDragStart = (e: React.DragEvent, id: string) => {
     setDraggedId(id);
     e.dataTransfer.effectAllowed = "move";
-    // Add a slight delay to allow the drag image to be captured
     setTimeout(() => {
       const element = document.getElementById(`category-${id}`);
       if (element) element.style.opacity = "0.5";
@@ -45,7 +44,6 @@ export default function DraggableCategoryList({
         const [removed] = newCategories.splice(draggedIndex, 1);
         newCategories.splice(targetIndex, 0, removed);
 
-        // Update display_order for all items
         const updatedCategories = newCategories.map((cat, index) => ({
           ...cat,
           display_order: index,
@@ -53,7 +51,6 @@ export default function DraggableCategoryList({
 
         setCategories(updatedCategories);
 
-        // Save to server
         await updateCategoryOrder(
           updatedCategories.map((c) => ({
             id: c.id,
@@ -86,15 +83,16 @@ export default function DraggableCategoryList({
 
   if (!categories || categories.length === 0) {
     return (
-      <p className="text-muted p-8 border border-white/5 rounded-[2rem] border-dashed text-center">
-        No categories yet.
-      </p>
+      <div className="p-8 rounded-xl bg-[#1c1c1c] border border-[#2e2e2e] text-center space-y-2">
+        <p className="text-[#ededef] font-semibold text-sm">No categories configured yet</p>
+        <p className="text-[#878c96] text-xs">Use the form above to add your first category.</p>
+      </div>
     );
   }
 
   return (
-    <div className="grid gap-3">
-      {categories.map((cat) => (
+    <div className="grid gap-2.5">
+      {categories.map((cat, index) => (
         <div
           key={cat.id}
           id={`category-${cat.id}`}
@@ -103,24 +101,39 @@ export default function DraggableCategoryList({
           onDragEnd={handleDragEnd}
           onDragOver={(e) => handleDragOver(e, cat.id)}
           onDragLeave={handleDragLeave}
-          className={`bg-card border p-4 px-6 rounded-[1.5rem] flex justify-between items-center group transition-all duration-200 cursor-grab active:cursor-grabbing ${dragOverId === cat.id
-              ? "border-accent/50 bg-accent/5 scale-[1.02]"
-              : "border-card-border hover:border-white/20"
-            }`}
+          className={`bg-[#1c1c1c] border p-3.5 sm:px-5 rounded-xl flex justify-between items-center group transition-all duration-150 cursor-grab active:cursor-grabbing ${
+            dragOverId === cat.id
+              ? "border-[#3ecf8e] bg-[#242424] scale-[1.005]"
+              : "border-[#2e2e2e] hover:border-[#3ecf8e]/40 hover:bg-[#242424]/80"
+          }`}
         >
-          <div className="flex items-center gap-4">
-            <GripVertical className="w-5 h-5 text-muted/50 group-hover:text-muted transition-colors" />
-            <div className="flex flex-col">
-              <span className="text-white font-medium text-lg">{cat.name}</span>
-              <span className="text-muted text-xs font-mono">{cat.slug}</span>
+          <div className="flex items-center gap-3 min-w-0">
+            <div className="p-1.5 rounded-lg bg-[#242424] border border-[#2e2e2e] text-[#6b7280] group-hover:text-[#3ecf8e] transition-colors">
+              <GripVertical className="w-4 h-4" />
+            </div>
+            
+            <div className="flex items-center gap-2.5 flex-wrap min-w-0">
+              <span className="text-[#ededef] font-bold text-sm group-hover:text-[#3ecf8e] transition-colors">
+                {cat.name}
+              </span>
+              <span className="text-[11px] font-mono font-medium text-[#3ecf8e] bg-[#3ecf8e]/10 border border-[#3ecf8e]/20 px-2 py-0.5 rounded-md">
+                {cat.slug}
+              </span>
             </div>
           </div>
-          <button
-            onClick={() => handleDelete(cat.id)}
-            className="text-red-400 hover:bg-red-400/10 p-2.5 rounded-full transition-colors cursor-pointer group-hover:bg-white/5"
-          >
-            <Trash2 className="w-5 h-5" />
-          </button>
+
+          <div className="flex items-center gap-3 flex-shrink-0">
+            <span className="hidden sm:inline-block text-[11px] font-mono text-[#6b7280]">
+              Order #{index + 1}
+            </span>
+            <button
+              onClick={() => handleDelete(cat.id)}
+              className="p-2 rounded-lg text-[#6b7280] hover:text-red-400 hover:bg-red-500/10 border border-transparent hover:border-red-500/20 transition-all cursor-pointer"
+              title="Delete Category"
+            >
+              <Trash2 className="w-4 h-4" />
+            </button>
+          </div>
         </div>
       ))}
     </div>

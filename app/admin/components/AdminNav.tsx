@@ -1,91 +1,57 @@
 "use client";
 
-import { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { LayoutDashboard, Layers, AppWindow, Menu, X, LifeBuoy } from "lucide-react";
+import { LayoutDashboard, Layers, AppWindow, LifeBuoy } from "lucide-react";
 
 export function AdminNav() {
   const pathname = usePathname();
-  const [isOpen, setIsOpen] = useState(false);
 
   const isActive = (path: string) => {
-    if (path === "/admin") {
-      return pathname === "/admin";
-    }
+    if (path === "/admin") return pathname === "/admin";
     return pathname.startsWith(path);
   };
 
   const links = [
-    {
-      href: "/admin",
-      label: "Overview",
-      icon: LayoutDashboard,
-      active: isActive("/admin"),
-    },
-    {
-      href: "/admin/categories",
-      label: "Categories",
-      icon: Layers,
-      active: isActive("/admin/categories"),
-    },
-    {
-      href: "/admin/nfts",
-      label: "Apps",
-      icon: AppWindow,
-      active: isActive("/admin/nfts"),
-    },
-    {
-      href: "/admin/support",
-      label: "Support",
-      icon: LifeBuoy,
-      active: isActive("/admin/support"),
-    },
+    { href: "/admin", label: "Overview", icon: LayoutDashboard },
+    { href: "/admin/categories", label: "Categories", icon: Layers },
+    { href: "/admin/nfts", label: "Apps", icon: AppWindow },
+    { href: "/admin/support", label: "Support", icon: LifeBuoy },
   ];
 
   return (
-    <>
-      {/* Mobile Menu Button */}
-      <button
-        onClick={() => setIsOpen(!isOpen)}
-        className="lg:hidden fixed top-4 left-4 z-50 p-3 bg-card border border-card-border rounded-full"
-      >
-        {isOpen ? (
-          <X className="w-5 h-5 text-white" />
-        ) : (
-          <Menu className="w-5 h-5 text-white" />
-        )}
-      </button>
+    <nav className="flex-1 px-3 py-4 space-y-0.5 overflow-y-auto">
+      <div className="px-3 pb-3 text-[10px] font-bold uppercase tracking-widest text-[#6b7280]">
+        Main Menu
+      </div>
 
-      {/* Mobile Overlay */}
-      {isOpen && (
-        <div
-          className="lg:hidden fixed inset-0 bg-black/60 backdrop-blur-sm z-30"
-          onClick={() => setIsOpen(false)}
-        />
-      )}
-
-      {/* Navigation */}
-      <nav className="flex-1 p-4 space-y-2">
-        {links.map((link) => (
+      {links.map((link) => {
+        const Icon = link.icon;
+        const active = isActive(link.href);
+        return (
           <Link
             key={link.href}
             href={link.href}
-            onClick={() => setIsOpen(false)}
-            className={`flex items-center gap-3 px-6 py-3 rounded-full transition-all duration-200 group relative overflow-hidden ${link.active
-                ? "bg-white text-black font-bold"
-                : "text-muted hover:text-white hover:bg-white/5"
-              }`}
+            className={`flex items-center justify-between px-3 py-2.5 rounded-lg transition-all duration-150 group ${
+              active
+                ? "bg-[#3ecf8e]/10 text-[#3ecf8e] border border-[#3ecf8e]/20"
+                : "text-[#9296a1] hover:text-[#ededef] hover:bg-[#242424] border border-transparent"
+            }`}
           >
-            <div className="relative z-10 flex items-center gap-3">
-              <link.icon
-                className={`w-5 h-5 ${link.active ? "text-black" : "group-hover:text-white transition-colors"}`}
+            <div className="flex items-center gap-3">
+              <Icon
+                className={`w-4 h-4 flex-shrink-0 ${
+                  active ? "text-[#3ecf8e]" : "text-[#6b7280] group-hover:text-[#ededef]"
+                }`}
               />
-              <span className="font-medium">{link.label}</span>
+              <span className="text-sm font-medium">{link.label}</span>
             </div>
+            {active && (
+              <span className="w-1.5 h-1.5 rounded-full bg-[#3ecf8e]"></span>
+            )}
           </Link>
-        ))}
-      </nav>
-    </>
+        );
+      })}
+    </nav>
   );
 }

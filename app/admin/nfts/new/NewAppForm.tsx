@@ -25,19 +25,16 @@ export default function NewAppForm({ categories }: NewAppFormProps) {
   const productFileInputRef = useRef<HTMLInputElement>(null);
   const router = useRouter();
 
-  // Use useActionState for form handling
   const [state, formAction, isPending] = useActionState(createNFT, {
     message: "",
     error: "404",
   });
 
-  // Handle state updates (Error or Success)
   useEffect(() => {
     if (state.error) {
       toast.error(state.error);
     } else if (state.message) {
       toast.success(state.message);
-      // Redirect after a short delay to allow toast to be seen
       router.push("/admin/nfts");
     }
   }, [state, router]);
@@ -83,13 +80,13 @@ export default function NewAppForm({ categories }: NewAppFormProps) {
   return (
     <form
       action={formAction}
-      className="bg-card border border-card-border p-4 sm:p-6 lg:p-8 rounded-[1.5rem] sm:rounded-[2rem] space-y-4 sm:space-y-6 shadow-xl"
+      className="bg-[#1c1c1c] border border-[#2e2e2e] p-6 sm:p-8 rounded-xl space-y-6"
     >
       {/* Dual Image Upload Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {/* Card/Thumbnail Image */}
-        <div className="space-y-4">
-          <label className="text-sm font-medium text-muted ml-2 block">
+        <div className="space-y-2">
+          <label className="text-xs font-semibold text-[#878c96] block">
             Card Image (Thumbnail)
           </label>
 
@@ -104,44 +101,44 @@ export default function NewAppForm({ categories }: NewAppFormProps) {
           />
 
           {previewUrl ? (
-            <div className="relative w-full aspect-[5/3] rounded-[2rem] overflow-hidden group border-2 border-dashed border-white/10 bg-white/5">
+            <div className="relative w-full aspect-[5/3] rounded-xl overflow-hidden group border-2 border-dashed border-[#2e2e2e] bg-[#141414]">
               <Image
                 src={previewUrl}
                 alt="Preview"
                 fill
                 className="object-cover"
               />
-              <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-4">
+              <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-3">
                 <button
                   type="button"
                   onClick={clearPreview}
-                  className="p-3 bg-red-500/20 text-red-500 rounded-full hover:bg-red-500 hover:text-white transition-colors backdrop-blur-md"
+                  className="p-2.5 bg-red-500/20 text-red-400 rounded-lg hover:bg-red-500 hover:text-white transition-colors"
                 >
-                  <X className="w-6 h-6" />
+                  <X className="w-5 h-5" />
                 </button>
                 <button
                   type="button"
                   onClick={triggerFileInput}
-                  className="p-3 bg-white/10 text-white rounded-full hover:bg-white hover:text-black transition-colors cursor-pointer backdrop-blur-md"
+                  className="p-2.5 bg-[#242424] text-[#ededef] rounded-lg hover:bg-[#2a2a2a] transition-colors cursor-pointer border border-[#2e2e2e]"
                 >
-                  <Upload className="w-6 h-6" />
+                  <Upload className="w-5 h-5" />
                 </button>
               </div>
             </div>
           ) : (
             <div
               onClick={triggerFileInput}
-              className="relative w-full aspect-[5/3] border-2 border-dashed border-white/10 rounded-[2rem] flex items-center justify-center text-center hover:border-accent/50 transition-colors group cursor-pointer bg-white/5 select-none"
+              className="relative w-full aspect-[5/3] border-2 border-dashed border-[#2e2e2e] rounded-xl flex items-center justify-center text-center hover:border-[#3ecf8e]/50 transition-colors group cursor-pointer bg-[#141414] select-none"
             >
               <div className="flex flex-col items-center gap-2 pointer-events-none p-4">
-                <div className="p-3 bg-white/10 rounded-full group-hover:bg-accent/20 transition-colors">
-                  <Upload className="w-6 h-6 text-muted group-hover:text-accent" />
+                <div className="p-2.5 bg-[#242424] rounded-lg group-hover:bg-[#3ecf8e]/10 transition-colors">
+                  <Upload className="w-5 h-5 text-[#6b7280] group-hover:text-[#3ecf8e]" />
                 </div>
                 <div className="space-y-0.5">
-                  <p className="text-white font-medium text-sm">
+                  <p className="text-[#ededef] font-semibold text-xs">
                     Upload Thumbnail
                   </p>
-                  <p className="text-muted text-xs">(5:3 Aspect Ratio)</p>
+                  <p className="text-[#6b7280] text-[11px]">(5:3 Aspect Ratio)</p>
                 </div>
               </div>
             </div>
@@ -149,9 +146,9 @@ export default function NewAppForm({ categories }: NewAppFormProps) {
         </div>
 
         {/* Product/Details Image */}
-        <div className="space-y-4">
-          <label className="text-sm font-medium text-muted ml-2 block">
-            Product Image (Modal)
+        <div className="space-y-2">
+          <label className="text-xs font-semibold text-[#878c96] block">
+            Product Image (Modal Cover)
           </label>
 
           <input
@@ -164,44 +161,44 @@ export default function NewAppForm({ categories }: NewAppFormProps) {
           />
 
           {productPreviewUrl ? (
-            <div className="relative w-full aspect-[5/3] rounded-[2rem] overflow-hidden group border-2 border-dashed border-white/10 bg-white/5">
+            <div className="relative w-full aspect-[5/3] rounded-xl overflow-hidden group border-2 border-dashed border-[#2e2e2e] bg-[#141414]">
               <Image
                 src={productPreviewUrl}
                 alt="Product Preview"
                 fill
                 className="object-cover"
               />
-              <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-4">
+              <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-3">
                 <button
                   type="button"
                   onClick={clearProductPreview}
-                  className="p-3 bg-red-500/20 text-red-500 rounded-full hover:bg-red-500 hover:text-white transition-colors backdrop-blur-md"
+                  className="p-2.5 bg-red-500/20 text-red-400 rounded-lg hover:bg-red-500 hover:text-white transition-colors"
                 >
-                  <X className="w-6 h-6" />
+                  <X className="w-5 h-5" />
                 </button>
                 <button
                   type="button"
                   onClick={triggerProductFileInput}
-                  className="p-3 bg-white/10 text-white rounded-full hover:bg-white hover:text-black transition-colors cursor-pointer backdrop-blur-md"
+                  className="p-2.5 bg-[#242424] text-[#ededef] rounded-lg hover:bg-[#2a2a2a] transition-colors cursor-pointer border border-[#2e2e2e]"
                 >
-                  <Upload className="w-6 h-6" />
+                  <Upload className="w-5 h-5" />
                 </button>
               </div>
             </div>
           ) : (
             <div
               onClick={triggerProductFileInput}
-              className="relative w-full aspect-[5/3] border-2 border-dashed border-white/10 rounded-[2rem] flex items-center justify-center text-center hover:border-accent/50 transition-colors group cursor-pointer bg-white/5 select-none"
+              className="relative w-full aspect-[5/3] border-2 border-dashed border-[#2e2e2e] rounded-xl flex items-center justify-center text-center hover:border-[#3ecf8e]/50 transition-colors group cursor-pointer bg-[#141414] select-none"
             >
               <div className="flex flex-col items-center gap-2 pointer-events-none p-4">
-                <div className="p-3 bg-white/10 rounded-full group-hover:bg-accent/20 transition-colors">
-                  <Upload className="w-6 h-6 text-muted group-hover:text-accent" />
+                <div className="p-2.5 bg-[#242424] rounded-lg group-hover:bg-[#3ecf8e]/10 transition-colors">
+                  <Upload className="w-5 h-5 text-[#6b7280] group-hover:text-[#3ecf8e]" />
                 </div>
                 <div className="space-y-0.5">
-                  <p className="text-white font-medium text-sm">
+                  <p className="text-[#ededef] font-semibold text-xs">
                     Upload Product Cover
                   </p>
-                  <p className="text-muted text-xs">
+                  <p className="text-[#6b7280] text-[11px]">
                     (High Quality Recommended)
                   </p>
                 </div>
@@ -211,70 +208,70 @@ export default function NewAppForm({ categories }: NewAppFormProps) {
         </div>
       </div>
 
-      <div className="space-y-3">
-        <label className="text-sm font-medium text-muted ml-2 block">
+      <div className="space-y-2">
+        <label className="text-xs font-semibold text-[#878c96] block">
           Description
         </label>
         <textarea
           name="description"
           rows={4}
           placeholder="Enter app description..."
-          className="w-full bg-white/5 border border-white/10 rounded-[2rem] py-3 sm:py-4 px-6 sm:px-8 text-white placeholder-white/20 focus:outline-none focus:border-accent/50 transition-all text-base sm:text-lg resize-none"
+          className="w-full bg-[#141414] border border-[#2e2e2e] rounded-lg py-2.5 px-4 text-[#ededef] placeholder-[#6b7280] focus:outline-none focus:border-[#3ecf8e] focus:ring-1 focus:ring-[#3ecf8e] transition-all text-sm resize-none"
         />
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-8">
-        <div className="space-y-3">
-          <label className="text-sm font-medium text-muted ml-2 block">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div className="space-y-2">
+          <label className="text-xs font-semibold text-[#878c96] block">
             Title
           </label>
           <input
             name="title"
             required
-            placeholder="e.g. The Space 305"
-            className="w-full bg-white/5 border border-white/10 rounded-full py-3 sm:py-4 px-6 sm:px-8 text-white placeholder-white/20 focus:outline-none focus:border-accent/50 transition-all text-base sm:text-lg"
+            placeholder="e.g. Photoshop 2026"
+            className="w-full bg-[#141414] border border-[#2e2e2e] rounded-lg py-2.5 px-4 text-[#ededef] placeholder-[#6b7280] focus:outline-none focus:border-[#3ecf8e] focus:ring-1 focus:ring-[#3ecf8e] transition-all text-sm font-medium"
           />
         </div>
-        <div className="space-y-3">
-          <label className="text-sm font-medium text-muted ml-2 block">
+        <div className="space-y-2">
+          <label className="text-xs font-semibold text-[#878c96] block">
             Creator
           </label>
           <input
             name="creator"
             required
-            placeholder="e.g. Shapire Cole"
-            className="w-full bg-white/5 border border-white/10 rounded-full py-3 sm:py-4 px-6 sm:px-8 text-white placeholder-white/20 focus:outline-none focus:border-accent/50 transition-all text-base sm:text-lg"
+            placeholder="e.g. Adobe Inc."
+            className="w-full bg-[#141414] border border-[#2e2e2e] rounded-lg py-2.5 px-4 text-[#ededef] placeholder-[#6b7280] focus:outline-none focus:border-[#3ecf8e] focus:ring-1 focus:ring-[#3ecf8e] transition-all text-sm font-medium"
           />
         </div>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-8">
-        <div className="space-y-3">
-          <label className="text-sm font-medium text-muted ml-2 block">
-            Price
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div className="space-y-2">
+          <label className="text-xs font-semibold text-[#878c96] block">
+            Price / Tag
           </label>
           <input
             name="price"
             required
-            placeholder="e.g. 0.5 ETH or Free"
-            className="w-full bg-white/5 border border-white/10 rounded-full py-3 sm:py-4 px-6 sm:px-8 text-white placeholder-white/20 focus:outline-none focus:border-accent/50 transition-all text-base sm:text-lg"
+            placeholder="e.g. Free or Pro"
+            className="w-full bg-[#141414] border border-[#2e2e2e] rounded-lg py-2.5 px-4 text-[#ededef] placeholder-[#6b7280] focus:outline-none focus:border-[#3ecf8e] focus:ring-1 focus:ring-[#3ecf8e] transition-all text-sm font-medium"
           />
         </div>
-        <div className="space-y-3">
-          <label className="text-sm font-medium text-muted ml-2 block">
+        <div className="space-y-2">
+          <label className="text-xs font-semibold text-[#878c96] block">
             Download URL
           </label>
           <input
             name="time_left"
             placeholder="e.g. https://mega.nz/..."
-            className="w-full bg-white/5 border border-white/10 rounded-full py-3 sm:py-4 px-6 sm:px-8 text-white placeholder-white/20 focus:outline-none focus:border-accent/50 transition-all text-base sm:text-lg"
+            className="w-full bg-[#141414] border border-[#2e2e2e] rounded-lg py-2.5 px-4 text-[#ededef] placeholder-[#6b7280] focus:outline-none focus:border-[#3ecf8e] focus:ring-1 focus:ring-[#3ecf8e] transition-all text-sm font-medium"
           />
         </div>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-8">
-        <div className="space-y-3">
-          <label className="text-sm font-medium text-muted ml-2 block">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div className="space-y-2">
+          <label className="text-xs font-semibold text-[#878c96] block">
             Category
           </label>
           <div className="relative">
@@ -282,20 +279,20 @@ export default function NewAppForm({ categories }: NewAppFormProps) {
               name="category_id"
               required
               defaultValue=""
-              className="w-full bg-[#1c1e26] border border-white/10 rounded-full py-3 sm:py-4 px-6 sm:px-8 text-white focus:outline-none focus:border-accent/50 transition-all appearance-none cursor-pointer text-base sm:text-lg"
+              className="w-full bg-[#141414] border border-[#2e2e2e] rounded-lg py-2.5 px-4 text-[#ededef] focus:outline-none focus:border-[#3ecf8e] focus:ring-1 focus:ring-[#3ecf8e] transition-all appearance-none cursor-pointer text-sm font-medium"
             >
               <option value="" disabled>
                 Select a category
               </option>
               {categories?.map((cat) => (
-                <option key={cat.id} value={cat.id}>
+                <option key={cat.id} value={cat.id} className="bg-[#1c1c1c] text-[#ededef]">
                   {cat.name}
                 </option>
               ))}
             </select>
-            <div className="absolute right-6 top-1/2 -translate-y-1/2 pointer-events-none text-muted">
+            <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-[#6b7280]">
               <svg
-                className="w-5 h-5"
+                className="w-4 h-4"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -310,8 +307,8 @@ export default function NewAppForm({ categories }: NewAppFormProps) {
             </div>
           </div>
         </div>
-        <div className="space-y-3">
-          <label className="text-sm font-medium text-muted ml-2 block">
+        <div className="space-y-2">
+          <label className="text-xs font-semibold text-[#878c96] block">
             Initial Downloads
           </label>
           <input
@@ -319,18 +316,15 @@ export default function NewAppForm({ categories }: NewAppFormProps) {
             type="text"
             inputMode="numeric"
             placeholder="e.g. 1200"
-            className="w-full bg-white/5 border border-white/10 rounded-full py-3 sm:py-4 px-6 sm:px-8 text-white placeholder-white/20 focus:outline-none focus:border-accent/50 transition-all text-base sm:text-lg"
+            className="w-full bg-[#141414] border border-[#2e2e2e] rounded-lg py-2.5 px-4 text-[#ededef] placeholder-[#6b7280] focus:outline-none focus:border-[#3ecf8e] focus:ring-1 focus:ring-[#3ecf8e] transition-all text-sm font-medium"
           />
-          <p className="text-muted text-xs ml-4">
-            Start count (for social proof)
-          </p>
         </div>
       </div>
 
-      <div className="pt-4">
+      <div className="pt-2">
         <button
           disabled={isPending}
-          className="w-full bg-white hover:bg-white/90 text-black font-bold py-3.5 rounded-full transition-all hover:scale-[1.01] active:scale-[0.99] cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+          className="w-full bg-[#3ecf8e] hover:bg-[#34b27b] text-[#141414] font-bold py-3 rounded-lg transition-all cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed text-sm"
         >
           {isPending ? "Creating App..." : "Create App"}
         </button>

@@ -42,65 +42,64 @@ export default function SupportRequestCard({
       setIsDeleting(false);
     } else {
       toast.success("Message deleted successfully");
-      // No need to set isDeleting(false) since the component will unmount
-      // when the server re-renders the list
     }
   }
 
   return (
     <div
-      className={`bg-white/5 border border-white/10 rounded-xl p-5 sm:p-6 flex flex-col gap-4 transition-opacity ${isDeleting ? "opacity-50 pointer-events-none" : ""
-        }`}
+      className={`bg-[#1c1c1c] border border-[#2e2e2e] rounded-xl p-5 sm:p-6 flex flex-col gap-3.5 transition-all ${
+        isDeleting ? "opacity-50 pointer-events-none" : "hover:border-[#3ecf8e]/30"
+      }`}
     >
-      {/* Top Header: Name & actions */}
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center w-full gap-4">
-        <div className="flex flex-col gap-1">
-          <h3 className="text-lg font-bold text-white">{request.name}</h3>
+      {/* Top Header */}
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center w-full gap-3">
+        <div className="flex flex-col gap-0.5">
+          <h3 className="text-base font-bold text-[#ededef]">{request.name}</h3>
           {request.email && (
             <a
               href={`mailto:${request.email}`}
-              className="text-sm text-accent hover:text-white transition-colors"
+              className="text-xs text-[#3ecf8e] hover:underline font-mono"
             >
               {request.email}
             </a>
           )}
         </div>
 
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2.5">
           <span
-            className={`px-3 py-1 text-xs font-semibold rounded-full ${request.status === "pending"
-                ? "bg-yellow-500/20 text-yellow-500"
+            className={`px-2.5 py-0.5 text-[11px] font-mono font-bold rounded-md border ${
+              request.status === "pending"
+                ? "bg-amber-500/10 text-amber-400 border-amber-500/20"
                 : request.status === "resolved"
-                  ? "bg-green-500/20 text-green-500"
-                  : "bg-white/10 text-white"
-              }`}
+                  ? "bg-[#3ecf8e]/10 text-[#3ecf8e] border-[#3ecf8e]/20"
+                  : "bg-[#242424] text-[#ededef] border-[#2e2e2e]"
+            }`}
           >
             {request.status}
           </span>
-          <span className="text-xs text-muted" suppressHydrationWarning>
+          <span className="text-xs text-[#6b7280]" suppressHydrationWarning>
             {formatDistanceToNow(new Date(request.created_at), {
               addSuffix: true,
             })}
           </span>
-          {/* Delete Button */}
           <button
             onClick={handleDelete}
             disabled={isDeleting}
             title="Delete message"
-            className="bg-red-500/10 hover:bg-red-500/20 text-red-500 p-2 rounded-lg transition-colors ml-2"
+            className="bg-[#242424] hover:bg-red-500/10 text-[#6b7280] hover:text-red-400 p-2 rounded-lg border border-[#2e2e2e] hover:border-red-500/20 transition-all cursor-pointer"
           >
-            <Trash2 className="w-4 h-4" />
+            <Trash2 className="w-3.5 h-3.5" />
           </button>
         </div>
       </div>
 
-      <div className="text-sm sm:text-base text-white/90 whitespace-pre-wrap font-mono break-all overflow-hidden w-full">
+      <div className="text-xs sm:text-sm text-[#ededef] whitespace-pre-wrap font-mono break-all bg-[#141414] p-3.5 rounded-lg border border-[#2e2e2e]">
         {displayedMessage}
 
         {shouldTruncate && (
           <button
             onClick={() => setIsExpanded(!isExpanded)}
-            className="text-accent hover:text-white transition-colors text-sm font-sans mt-2 block font-medium"
+            className="text-[#3ecf8e] hover:underline transition-colors text-xs font-sans mt-2 block font-semibold cursor-pointer"
           >
             {isExpanded ? "Show less" : "Read more"}
           </button>

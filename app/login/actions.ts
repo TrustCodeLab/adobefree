@@ -14,8 +14,7 @@ export async function login(formData: FormData) {
 
   // 2. Enforce restricted access
   if (email !== "trustjonathan.ug@gmail.com") {
-    // In a real app we might genericize the error, but for this specific request:
-    return redirect("/login?error=Access Denied: Restricted Email");
+    redirect("/login?error=Access Denied: Restricted Email");
   }
 
   // 3. Authenticate with Supabase
@@ -26,7 +25,7 @@ export async function login(formData: FormData) {
 
   if (error) {
     console.error("Login Error:", error);
-    return redirect(`/login?error=${encodeURIComponent(error.message)}`);
+    redirect(`/login?error=${encodeURIComponent(error.message)}`);
   }
 
   // 4. Redirect on success

@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 import {
   LayoutDashboard,
@@ -10,6 +11,7 @@ import {
   Menu,
   X,
   LogOut,
+  LifeBuoy,
 } from "lucide-react";
 
 interface MobileSidebarProps {
@@ -21,93 +23,100 @@ export function MobileSidebar({ signOutAction }: MobileSidebarProps) {
   const [isOpen, setIsOpen] = useState(false);
 
   const isActive = (path: string) => {
-    if (path === "/admin") {
-      return pathname === "/admin";
-    }
+    if (path === "/admin") return pathname === "/admin";
     return pathname.startsWith(path);
   };
 
   const links = [
-    {
-      href: "/admin",
-      label: "Overview",
-      icon: LayoutDashboard,
-      active: isActive("/admin"),
-    },
-    {
-      href: "/admin/categories",
-      label: "Categories",
-      icon: Layers,
-      active: isActive("/admin/categories"),
-    },
-    {
-      href: "/admin/nfts",
-      label: "Apps",
-      icon: AppWindow,
-      active: isActive("/admin/nfts"),
-    },
+    { href: "/admin", label: "Overview", icon: LayoutDashboard },
+    { href: "/admin/categories", label: "Categories", icon: Layers },
+    { href: "/admin/nfts", label: "Apps", icon: AppWindow },
+    { href: "/admin/support", label: "Support", icon: LifeBuoy },
   ];
 
   return (
     <>
-      {/* Mobile Menu Button - Only visible on mobile */}
+      {/* Mobile Menu Button */}
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="lg:hidden fixed top-4 left-4 z-50 p-3 bg-card border border-card-border rounded-full hover:bg-white/5 transition-colors"
+        className="lg:hidden fixed top-4 left-4 z-50 p-2.5 bg-[#1c1c1c] border border-[#2a2a2a] rounded-lg hover:bg-[#242424] transition-colors"
         aria-label="Toggle menu"
       >
         {isOpen ? (
-          <X className="w-5 h-5 text-white" />
+          <X className="w-5 h-5 text-[#ededef]" />
         ) : (
-          <Menu className="w-5 h-5 text-white" />
+          <Menu className="w-5 h-5 text-[#ededef]" />
         )}
       </button>
 
       {/* Mobile Overlay */}
       {isOpen && (
         <div
-          className="lg:hidden fixed inset-0 bg-black/60 backdrop-blur-sm z-30"
+          className="lg:hidden fixed inset-0 bg-black/70 backdrop-blur-sm z-30"
           onClick={() => setIsOpen(false)}
         />
       )}
 
       {/* Mobile Sidebar Drawer */}
       <aside
-        className={`lg:hidden fixed inset-y-0 left-0 w-64 bg-card border-r border-card-border flex flex-col z-40 transform transition-transform duration-300 ease-in-out ${isOpen ? "translate-x-0" : "-translate-x-full"
-          }`}
+        className={`lg:hidden fixed inset-y-0 left-0 w-64 bg-[#1c1c1c] border-r border-[#2a2a2a] flex flex-col z-40 transform transition-transform duration-300 ease-in-out ${
+          isOpen ? "translate-x-0" : "-translate-x-full"
+        }`}
       >
-        <div className="p-6 border-b border-white/5 pt-16">
-          <h1 className="text-xl font-bold text-white tracking-tight">
-            Admin Panel
-          </h1>
+        {/* Header */}
+        <div className="p-5 border-b border-[#2a2a2a] pt-16 flex items-center gap-3">
+          <div className="w-8 h-8 rounded-lg overflow-hidden bg-[#242424] border border-[#2e2e2e] flex items-center justify-center flex-shrink-0 p-1">
+            <Image
+              src="/icon.png"
+              alt="Adobe Free Icon"
+              width={24}
+              height={24}
+              className="object-contain"
+            />
+          </div>
+          <div>
+            <h1 className="text-sm font-bold text-[#ededef]">Adobe Free</h1>
+            <div className="flex items-center gap-1 mt-0.5">
+              <span className="w-1.5 h-1.5 rounded-full bg-[#3ecf8e]"></span>
+              <span className="text-[10px] font-semibold uppercase tracking-wider text-[#3ecf8e]">Production</span>
+            </div>
+          </div>
         </div>
 
-        <nav className="flex-1 p-4 space-y-2">
-          {links.map((link) => (
-            <Link
-              key={link.href}
-              href={link.href}
-              onClick={() => setIsOpen(false)}
-              className={`flex items-center gap-3 px-6 py-3 rounded-full transition-all duration-200 group relative overflow-hidden ${link.active
-                  ? "bg-white text-black font-bold"
-                  : "text-muted hover:text-white hover:bg-white/5"
+        {/* Nav */}
+        <nav className="flex-1 px-3 py-4 space-y-0.5">
+          <div className="px-3 pb-3 text-[10px] font-bold uppercase tracking-widest text-[#6b7280]">
+            Main Menu
+          </div>
+          {links.map((link) => {
+            const Icon = link.icon;
+            const active = isActive(link.href);
+            return (
+              <Link
+                key={link.href}
+                href={link.href}
+                onClick={() => setIsOpen(false)}
+                className={`flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all duration-150 group ${
+                  active
+                    ? "bg-[#3ecf8e]/10 text-[#3ecf8e] border border-[#3ecf8e]/20"
+                    : "text-[#9296a1] hover:text-[#ededef] hover:bg-[#242424] border border-transparent"
                 }`}
-            >
-              <div className="relative z-10 flex items-center gap-3">
-                <link.icon
-                  className={`w-5 h-5 ${link.active ? "text-black" : "group-hover:text-white transition-colors"}`}
+              >
+                <Icon
+                  className={`w-4 h-4 ${active ? "text-[#3ecf8e]" : "text-[#6b7280] group-hover:text-[#ededef]"}`}
                 />
-                <span className="font-medium">{link.label}</span>
-              </div>
-            </Link>
-          ))}
+                <span className="text-sm font-medium">{link.label}</span>
+              </Link>
+            );
+          })}
         </nav>
 
-        <div className="p-4 border-t border-white/5">
+        {/* Footer */}
+        <div className="p-4 border-t border-[#2a2a2a]">
           <form action={signOutAction}>
-            <button className="w-full flex items-center gap-3 px-6 py-3 rounded-full text-red-400 hover:bg-red-400/10 transition-colors pointer-events-auto cursor-pointer">
-              <LogOut className="w-5 h-5" />
-              <span className="font-medium">Sign Out</span>
+            <button className="w-full flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg bg-[#1a1a1a] hover:bg-red-500/10 text-[#6b7280] hover:text-red-400 border border-[#2a2a2a] hover:border-red-500/20 text-xs font-semibold transition-all cursor-pointer">
+              <LogOut className="w-3.5 h-3.5" />
+              <span>Sign Out</span>
             </button>
           </form>
         </div>
