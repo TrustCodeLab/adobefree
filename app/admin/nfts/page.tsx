@@ -19,7 +19,7 @@ export default async function NFTsPage() {
             {/* Supabase Styled Header Banner */}
             <div className="relative overflow-hidden rounded-xl bg-[#1c1c1c] p-6 sm:p-8 border border-[#2e2e2e]">
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 relative z-10">
-                    <div className="space-y-1.5">
+                    <div className="space-y-2.5">
                         <div className="flex items-center gap-2">
                             <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-[#3ecf8e]/10 text-[#3ecf8e] border border-[#3ecf8e]/20">
                                 <WindowIcon className="w-3.5 h-3.5" /> Software Store
