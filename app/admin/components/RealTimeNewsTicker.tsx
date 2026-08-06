@@ -133,27 +133,29 @@ export default function RealTimeNewsTicker() {
       </div>
 
       {/* News Item */}
-      <div className="px-4 py-2 h-9 flex items-center">
+      <div className="px-4 py-2.5">
         {loading ? (
-          <div className="flex items-center gap-2 w-full">
+          <div className="flex items-center gap-2">
             <ArrowPathIcon className="w-3.5 h-3.5 text-[#3ecf8e] animate-spin flex-shrink-0" />
             <span className="text-xs text-[#6b7280] font-mono">Fetching live news…</span>
           </div>
         ) : (
           <div
-            className="flex items-center justify-between w-full transition-all duration-300 ease-in-out"
+            className="flex flex-col gap-1.5 transition-all duration-300 ease-in-out"
             style={{
               opacity: visible ? 1 : 0,
-              transform: visible ? "translateY(0)" : dir === "up" ? "translateY(-6px)" : "translateY(6px)",
+              transform: visible ? "translateY(0)" : dir === "up" ? "translateY(-5px)" : "translateY(5px)",
             }}
           >
-            <div className="flex items-center gap-2.5 min-w-0">
+            {/* Row 1: tag + time */}
+            <div className="flex items-center justify-between gap-2">
               <span className={`px-2 py-0.5 rounded text-[10px] font-mono font-bold uppercase border flex-shrink-0 ${item.badgeColor}`}>
                 {item.tag}
               </span>
-              <p className="text-xs text-[#ededef] font-medium truncate">{item.title}</p>
+              <span className="text-[10px] text-[#6b7280] font-mono flex-shrink-0">{item.time}</span>
             </div>
-            <span className="text-[10px] text-[#6b7280] font-mono flex-shrink-0 ml-2">{item.time}</span>
+            {/* Row 2: full title, up to 2 lines */}
+            <p className="text-xs text-[#ededef] font-medium leading-relaxed line-clamp-2">{item.title}</p>
           </div>
         )}
       </div>
