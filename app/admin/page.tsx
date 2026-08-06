@@ -10,7 +10,6 @@ import {
   PencilIcon,
   ClockIcon,
   ArrowTopRightOnSquareIcon,
-  SparklesIcon,
   ChatBubbleLeftRightIcon,
   ChevronRightIcon,
   ShieldCheckIcon,
@@ -18,6 +17,7 @@ import {
   ArrowTrendingUpIcon,
   ArrowRightIcon,
 } from "@heroicons/react/24/outline";
+import RealTimeNewsTicker from "./components/RealTimeNewsTicker";
 
 export default async function AdminDashboard() {
   const supabase = await createClient();
@@ -453,15 +453,8 @@ export default async function AdminDashboard() {
             )}
           </div>
 
-          {/* Pro Tip Card */}
-          <div className="rounded-xl p-4 bg-[#1c1c1c] border border-[#3ecf8e]/30 space-y-2 relative overflow-hidden">
-            <div className="flex items-center gap-2 text-[#3ecf8e] text-xs font-bold">
-              <SparklesIcon className="w-4 h-4" /> Supabase Ordering Tip
-            </div>
-            <p className="text-[#878c96] text-xs leading-relaxed">
-              Reorder apps live.
-            </p>
-          </div>
+          {/* Real-Time News Ticker */}
+          <RealTimeNewsTicker />
         </div>
       </div>
     </div>
