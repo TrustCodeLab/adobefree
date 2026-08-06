@@ -1,6 +1,6 @@
 import { login } from "@/app/login/actions";
 import Image from "next/image";
-import { ShieldCheck } from "lucide-react";
+import { ShieldCheckIcon } from "@heroicons/react/24/outline";
 
 export default async function LoginPage(props: {
   searchParams: Promise<{ error?: string }>;
@@ -144,7 +144,7 @@ export default async function LoginPage(props: {
 
         {/* Footer note */}
         <div className="flex items-center justify-center gap-1.5 mt-6">
-          <ShieldCheck className="w-3.5 h-3.5" style={{ color: "#3ecf8e" }} />
+          <ShieldCheckIcon className="w-3.5 h-3.5" style={{ color: "#3ecf8e" }} />
           <span className="text-xs" style={{ color: "#6b7280" }}>
             Restricted to authorized administrators only
           </span>

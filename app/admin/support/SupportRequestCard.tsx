@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { formatDistanceToNow } from "date-fns";
-import { Trash2 } from "lucide-react";
+import { TrashIcon } from "@heroicons/react/24/outline";
 import { toast } from "sonner";
 import { deleteSupportRequest } from "./actions";
 
@@ -88,7 +88,7 @@ export default function SupportRequestCard({
             title="Delete message"
             className="bg-[#242424] hover:bg-red-500/10 text-[#6b7280] hover:text-red-400 p-2 rounded-lg border border-[#2e2e2e] hover:border-red-500/20 transition-all cursor-pointer"
           >
-            <Trash2 className="w-3.5 h-3.5" />
+            <TrashIcon className="w-3.5 h-3.5" />
           </button>
         </div>
       </div>

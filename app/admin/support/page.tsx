@@ -1,6 +1,6 @@
 import { createClient } from "../../utils/supabase/server"
 import SupportRequestCard, { type SupportRequest } from "./SupportRequestCard"
-import { LifeBuoy } from "lucide-react"
+import { LifebuoyIcon } from "@heroicons/react/24/outline"
 
 export default async function SupportRequestsPage() {
   const supabase = await createClient()
@@ -24,7 +24,7 @@ export default async function SupportRequestsPage() {
       <div className="relative overflow-hidden rounded-xl bg-[#1c1c1c] p-6 sm:p-8 border border-[#2e2e2e]">
         <div className="flex items-center gap-2 mb-1.5">
           <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-[#3ecf8e]/10 text-[#3ecf8e] border border-[#3ecf8e]/20">
-            <LifeBuoy className="w-3.5 h-3.5" /> Customer Feedback
+            <LifebuoyIcon className="w-3.5 h-3.5" /> Customer Feedback
           </span>
           <span className="text-[#6b7280] text-xs font-medium">• User Inquiries</span>
         </div>
