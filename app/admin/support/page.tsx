@@ -30,7 +30,7 @@ export default async function SupportRequestsPage() {
             <span className="text-[#6b7280] text-xs font-medium">• User Inquiries</span>
           </div>
           <h2 className="text-2xl sm:text-3xl font-bold text-[#ededef] tracking-tight">Support Requests</h2>
-          <p className="text-[#878c96] text-sm leading-relaxed">View and manage support inquiries sent from the contact form.</p>
+          <p className="text-[#878c96] text-sm leading-relaxed">Customer support inbox.</p>
         </div>
       </div>
 

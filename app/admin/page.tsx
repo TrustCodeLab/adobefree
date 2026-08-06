@@ -113,7 +113,7 @@ export default async function AdminDashboard() {
               Overview & Analytics
             </h2>
             <p className="text-[#878c96] text-sm leading-relaxed">
-              Real-time monitoring for software catalog metrics, category distribution, and incoming support tickets.
+              Real-time catalog metrics.
             </p>
           </div>
 
@@ -459,11 +459,7 @@ export default async function AdminDashboard() {
               <SparklesIcon className="w-4 h-4" /> Supabase Ordering Tip
             </div>
             <p className="text-[#878c96] text-xs leading-relaxed">
-              Drag & drop software cards directly in the{" "}
-              <Link href="/admin/nfts" className="text-[#3ecf8e] font-semibold underline hover:text-[#34b27b]">
-                Apps Management
-              </Link>{" "}
-              page to reorder catalog items live!
+              Reorder apps live.
             </p>
           </div>
         </div>

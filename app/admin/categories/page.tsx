@@ -28,7 +28,7 @@ export default async function CategoriesPage() {
               Category Management
             </h2>
             <p className="text-[#878c96] text-sm">
-              Create and organize software categories. Drag and drop items to adjust storefront display order.
+              Organize software categories.
             </p>
           </div>
 

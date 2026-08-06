@@ -30,7 +30,7 @@ export default async function NFTsPage() {
                             Apps Management
                         </h2>
                         <p className="text-[#878c96] text-sm">
-                            Manage software packages, edit details, and drag cards to customize storefront order.
+                            Manage software catalog.
                         </p>
                     </div>
 
