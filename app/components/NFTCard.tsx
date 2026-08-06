@@ -78,7 +78,7 @@ export default function NFTCard({
   return (
     <article
       onClick={onDetailsClick}
-      className="cursor-pointer bg-card rounded-[1.5rem] sm:rounded-[2rem] lg:rounded-[2.5rem] overflow-hidden border border-card-border flex flex-col group transition-all duration-500 ease-out hover:!border-white/15 hover:shadow-2xl hover:shadow-accent/5"
+      className="cursor-pointer bg-card rounded-[1.5rem] sm:rounded-[2rem] lg:rounded-[2.5rem] border border-card-border flex flex-col group transition-all duration-500 ease-out hover:!border-white/15 hover:shadow-2xl hover:shadow-accent/5"
       itemScope
       itemType="https://schema.org/SoftwareApplication"
     >
@@ -108,7 +108,7 @@ export default function NFTCard({
         <div className="absolute bottom-0 right-4 sm:right-6 flex items-center gap-1.5 sm:gap-2 z-10 translate-y-1/2">
           <button
             onClick={handleShare}
-            className={`w-7 h-7 sm:w-9 sm:h-9 rounded-full bg-[#1c1e26] border border-white/10 flex items-center justify-center transition-all duration-300 hover:scale-110 shadow-xl cursor-pointer group/btn ${isShared
+            className={`w-7 h-7 sm:w-9 sm:h-9 rounded-full bg-[#1c1e26] border border-white/10 flex items-center justify-center transition-all duration-300 hover:scale-110 cursor-pointer group/btn ${isShared
               ? "bg-green-500/20 border-green-500 text-green-500"
               : "hover:bg-accent hover:border-accent"
               }`}
@@ -121,7 +121,7 @@ export default function NFTCard({
           </button>
           <button
             onClick={handleLike}
-            className="w-7 h-7 sm:w-9 sm:h-9 rounded-full bg-[#1c1e26] border border-white/10 flex items-center justify-center transition-all duration-300 hover:scale-110 hover:bg-pink-500 hover:border-pink-500 shadow-xl cursor-pointer group/btn"
+            className="w-7 h-7 sm:w-9 sm:h-9 rounded-full bg-[#1c1e26] border border-white/10 flex items-center justify-center transition-all duration-300 hover:scale-110 hover:bg-pink-500 hover:border-pink-500 cursor-pointer group/btn"
           >
             <Heart
               className={`w-3 h-3 sm:w-4 sm:h-4 transition-colors ${isLiked ? "text-white fill-white" : "text-white/70 group-hover/btn:text-white"}`}
@@ -162,7 +162,7 @@ export default function NFTCard({
                 "/installation-video/MONTAGEM BOLADA (Ultra Slowed).mp4",
               );
             }}
-            className="pill-container rounded-full px-2 py-2 sm:py-2.5 flex items-center justify-center flex-1 min-w-0 cursor-pointer border border-card-border hover:!border-white/15 hover:shadow-2xl hover:shadow-accent/5 transition-all duration-500 ease-out active:scale-95 group/inst"
+            className="pill-container rounded-full px-2 py-2 sm:py-2.5 flex items-center justify-center flex-1 min-w-0 cursor-pointer border border-card-border hover:!border-white/15 transition-all duration-500 ease-out active:scale-95 group/inst"
           >
             <span className="text-muted/80 font-semibold text-[0.7rem] sm:text-[0.8rem] whitespace-nowrap truncate transition-colors">
               Installation
@@ -173,7 +173,7 @@ export default function NFTCard({
               e.stopPropagation(); // Prevent card click
               onDetailsClick(); // Open details modal
             }}
-            className="flex-1 min-w-0 bg-white hover:bg-white/90 text-black font-bold py-2 sm:py-2.5 rounded-full transition-all duration-300 shadow-lg shadow-white/20 text-[0.8rem] sm:text-[0.9rem] cursor-pointer flex items-center justify-center px-2 hover:scale-[1.02] active:scale-95 group/download"
+            className="flex-1 min-w-0 bg-white hover:bg-white/90 text-black font-bold py-2 sm:py-2.5 rounded-full transition-all duration-300 text-[0.8rem] sm:text-[0.9rem] cursor-pointer flex items-center justify-center px-2 hover:scale-[1.02] active:scale-95 group/download"
           >
             <CloudDownload className="w-3.5 h-3.5 sm:w-4 sm:h-4 mr-1 sm:mr-1.5 flex-shrink-0 group-hover/download:animate-bounce" />
             <span className="truncate">Download</span>

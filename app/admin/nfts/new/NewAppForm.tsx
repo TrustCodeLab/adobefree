@@ -330,7 +330,7 @@ export default function NewAppForm({ categories }: NewAppFormProps) {
       <div className="pt-4">
         <button
           disabled={isPending}
-          className="w-full bg-white hover:bg-white/90 text-black font-bold py-3.5 rounded-full transition-all shadow-lg shadow-white/10 hover:shadow-white/20 hover:scale-[1.01] active:scale-[0.99] cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+          className="w-full bg-white hover:bg-white/90 text-black font-bold py-3.5 rounded-full transition-all hover:scale-[1.01] active:scale-[0.99] cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
         >
           {isPending ? "Creating App..." : "Create App"}
         </button>

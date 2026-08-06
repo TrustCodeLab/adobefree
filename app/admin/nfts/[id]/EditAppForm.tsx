@@ -335,7 +335,7 @@ export default function EditAppForm({ nft, categories }: EditAppFormProps) {
       </div>
 
       <div className="pt-4">
-        <button className="w-full bg-white hover:bg-white/90 text-black font-bold py-3.5 rounded-full transition-all shadow-lg shadow-white/10 hover:shadow-white/20 hover:scale-[1.01] active:scale-[0.99] cursor-pointer">
+        <button className="w-full bg-white hover:bg-white/90 text-black font-bold py-3.5 rounded-full transition-all hover:scale-[1.01] active:scale-[0.99] cursor-pointer">
           Update App
         </button>
       </div>

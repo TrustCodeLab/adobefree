@@ -1,92 +1,117 @@
 "use client";
 
 import { useState, useRef, useEffect, useCallback } from "react";
+import Link from "next/link";
 import NFTCard from "./NFTCard";
 import VideoModal from "./VideoModal";
 import ProductModal from "./ProductModal";
 import { useRealtimeNFTs, Category, NFT } from "../hooks/useRealtimeNFTs";
+import { PackageSearch, MessageCircle, ChevronLeft, ChevronRight } from "lucide-react";
 
 // Custom hook for drag and wheel scrolling
 function useDragScroll() {
-  // We use a callback ref to ensure we capture the node even if it renders late
   const internalRef = useRef<HTMLDivElement | null>(null);
   const [node, setNode] = useState<HTMLDivElement | null>(null);
+  const [isDragging, setIsDragging] = useState(false);
 
   const ref = useCallback((element: HTMLDivElement | null) => {
     internalRef.current = element;
     setNode(element);
   }, []);
 
-  // Add non-passive wheel listener to map vertical scroll to horizontal
+  const scrollByAmount = useCallback((amount: number) => {
+    if (internalRef.current) {
+      internalRef.current.scrollBy({
+        left: amount,
+        behavior: "smooth",
+      });
+    }
+  }, []);
+
+  // Wheel scrolling (maps vertical mouse wheel to horizontal with smooth animation)
   useEffect(() => {
     if (!node) return;
 
     const onWheel = (e: WheelEvent) => {
-      // Check if purely vertical scroll (most mice)
+      // If user is swiping horizontally on trackpad (deltaX dominant), let native scroll work
+      if (Math.abs(e.deltaX) > Math.abs(e.deltaY) && Math.abs(e.deltaX) > 10) return;
+
       if (e.deltaY !== 0) {
-        // Prevent page scrolling
-        e.preventDefault();
-        // Scroll the element horizontally with smooth behavior
-        node.scrollBy({
-          left: e.deltaY,
-          behavior: "smooth",
-        });
+        const maxScroll = node.scrollWidth - node.clientWidth;
+        if (maxScroll <= 5) return;
+
+        // Normalize mouse wheel ticks (lines vs pixels vs notched wheels)
+        let delta = e.deltaY;
+        if (e.deltaMode === 1) {
+          delta *= 40; // Line mode -> pixels
+        } else if (Math.abs(delta) < 40) {
+          delta = Math.sign(delta) * 140; // Normalize small notched wheel ticks
+        } else {
+          delta *= 1.8;
+        }
+
+        const canScrollLeft = node.scrollLeft > 2;
+        const canScrollRight = node.scrollLeft < maxScroll - 2;
+
+        if ((delta > 0 && canScrollRight) || (delta < 0 && canScrollLeft)) {
+          e.preventDefault();
+          node.scrollBy({
+            left: delta,
+            behavior: "smooth",
+          });
+        }
       }
     };
 
-    // Passive: false is strict requirement to allow e.preventDefault()
     node.addEventListener("wheel", onWheel, { passive: false });
+    return () => node.removeEventListener("wheel", onWheel);
+  }, [node]);
+
+  // Window-level Drag Scrolling (never gets interrupted when cursor leaves container)
+  useEffect(() => {
+    const el = node;
+    if (!el) return;
+
+    let isDown = false;
+    let startX = 0;
+    let scrollLeftPos = 0;
+
+    const handleMouseDown = (e: MouseEvent) => {
+      if (e.button !== 0) return;
+      isDown = true;
+      startX = e.pageX - el.offsetLeft;
+      scrollLeftPos = el.scrollLeft;
+    };
+
+    const handleMouseMove = (e: MouseEvent) => {
+      if (!isDown) return;
+      const x = e.pageX - el.offsetLeft;
+      const walk = x - startX;
+
+      if (Math.abs(walk) > 4) {
+        setIsDragging(true);
+        e.preventDefault();
+        el.scrollLeft = scrollLeftPos - walk * 1.5;
+      }
+    };
+
+    const handleMouseUp = () => {
+      isDown = false;
+      setTimeout(() => setIsDragging(false), 50);
+    };
+
+    el.addEventListener("mousedown", handleMouseDown);
+    window.addEventListener("mousemove", handleMouseMove);
+    window.addEventListener("mouseup", handleMouseUp);
 
     return () => {
-      node.removeEventListener("wheel", onWheel);
+      el.removeEventListener("mousedown", handleMouseDown);
+      window.removeEventListener("mousemove", handleMouseMove);
+      window.removeEventListener("mouseup", handleMouseUp);
     };
   }, [node]);
 
-  const [isDragging, setIsDragging] = useState(false);
-  const [scrollLeft, setScrollLeft] = useState(0);
-  const [startX, setStartX] = useState(0);
-
-  // Use refs to track mouse state without triggering re-renders until threshold is met
-  const isMouseDown = useRef(false);
-  const mouseDownX = useRef(0);
-
-  const onMouseDown = (e: React.MouseEvent) => {
-    if (!internalRef.current) return;
-    isMouseDown.current = true;
-    mouseDownX.current = e.pageX;
-    setStartX(e.pageX - internalRef.current.offsetLeft);
-    setScrollLeft(internalRef.current.scrollLeft);
-  };
-
-  const onMouseLeave = () => {
-    isMouseDown.current = false;
-    setIsDragging(false);
-  };
-
-  const onMouseUp = () => {
-    isMouseDown.current = false;
-    setIsDragging(false);
-  };
-
-  const onMouseMove = (e: React.MouseEvent) => {
-    if (!isMouseDown.current || !internalRef.current) return;
-
-    // Only start dragging if moves more than 5 pixels
-    const x = e.pageX;
-    const distance = Math.abs(x - mouseDownX.current);
-
-    if (!isDragging && distance > 5) {
-      setIsDragging(true);
-    }
-
-    if (isDragging) {
-      e.preventDefault();
-      const walkX = (x - (startX + internalRef.current.offsetLeft)) * 2; // Drag multiplier
-      internalRef.current.scrollLeft = scrollLeft - walkX;
-    }
-  };
-
-  return { ref, onMouseDown, onMouseLeave, onMouseUp, onMouseMove, isDragging };
+  return { ref, isDragging, scrollByAmount };
 }
 
 function CategorySection({
@@ -96,8 +121,7 @@ function CategorySection({
   category: Category;
   query: string;
 }) {
-  const { ref, onMouseDown, onMouseLeave, onMouseUp, onMouseMove, isDragging } =
-    useDragScroll();
+  const { ref, isDragging, scrollByAmount } = useDragScroll();
   const [activeVideo, setActiveVideo] = useState<string | null>(null);
   const [activeProduct, setActiveProduct] = useState<NFT | null>(null);
 
@@ -115,16 +139,31 @@ function CategorySection({
 
   return (
     <section className="space-y-3 sm:space-y-4">
-      <h1 className="text-lg sm:text-xl font-bold text-white tracking-tight px-1">
-        {category.name}
-      </h1>
+      <div className="flex items-center justify-between">
+        <h1 className="text-lg sm:text-xl font-bold text-white tracking-tight">
+          {category.name}
+        </h1>
+        {/* Desktop smooth scroll arrow navigation */}
+        <div className="hidden sm:flex items-center gap-1.5">
+          <button
+            onClick={() => scrollByAmount(-340)}
+            className="w-8 h-8 rounded-full bg-white/5 hover:bg-white/12 border border-white/10 text-white/70 hover:text-white transition-all duration-200 flex items-center justify-center cursor-pointer active:scale-90"
+            aria-label="Scroll left"
+          >
+            <ChevronLeft className="w-4 h-4" />
+          </button>
+          <button
+            onClick={() => scrollByAmount(340)}
+            className="w-8 h-8 rounded-full bg-white/5 hover:bg-white/12 border border-white/10 text-white/70 hover:text-white transition-all duration-200 flex items-center justify-center cursor-pointer active:scale-90"
+            aria-label="Scroll right"
+          >
+            <ChevronRight className="w-4 h-4" />
+          </button>
+        </div>
+      </div>
       <div
         ref={ref}
-        onMouseDown={onMouseDown}
-        onMouseLeave={onMouseLeave}
-        onMouseUp={onMouseUp}
-        onMouseMove={onMouseMove}
-        className={`flex gap-3 sm:gap-4 lg:gap-6 overflow-x-auto pb-4 sm:pb-6 pt-1 sm:pt-2 snap-x snap-proximity hide-scrollbar rounded-2xl sm:rounded-3xl -mx-1 px-1 ${isDragging ? "snap-none" : ""}`}
+        className={`flex gap-3 sm:gap-4 lg:gap-6 overflow-x-auto pb-4 sm:pb-6 pt-3 sm:pt-4 snap-x snap-proximity hide-scrollbar overscroll-x-contain -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8 scroll-px-4 sm:scroll-px-6 lg:scroll-px-8 ${isDragging ? "snap-none" : ""}`}
       >
         {filteredItems.map((item) => (
           <div
@@ -148,6 +187,8 @@ function CategorySection({
             </div>
           </div>
         ))}
+        {/* End spacer to guarantee right padding on flex scroll in mobile browsers */}
+        <div className="w-0.5 shrink-0 opacity-0 pointer-events-none" aria-hidden="true" />
       </div>
 
       <VideoModal videoUrl={activeVideo} onClose={() => setActiveVideo(null)} />
@@ -191,6 +232,69 @@ export default function NFTStoreClient({
         <a href="/login" className="text-accent hover:underline">
           Admin Login
         </a>
+      </div>
+    );
+  }
+
+  // Detect if all categories have zero matches for the current query
+  const hasAnyResult = query
+    ? categories.some((cat) =>
+        cat.nfts?.some(
+          (item) =>
+            item.title.toLowerCase().includes(query) ||
+            item.creator.toLowerCase().includes(query),
+        ),
+      )
+    : true;
+
+  if (!hasAnyResult) {
+    return (
+      <div className="flex flex-col items-center justify-center py-16 sm:py-20 text-center px-4">
+
+        {/* Icon */}
+        <div className="relative flex items-center justify-center mb-5">
+          <div className="absolute w-16 h-16 rounded-full bg-accent/10 blur-lg" />
+          <div className="relative w-14 h-14 rounded-full bg-white/5 border border-white/10 flex items-center justify-center ring-1 ring-accent/20">
+            <PackageSearch className="w-6 h-6 text-accent/70" />
+          </div>
+        </div>
+
+        {/* Eyebrow */}
+        <p className="text-[0.65rem] font-semibold uppercase tracking-[0.18em] text-accent mb-2">
+          No Results Found
+        </p>
+
+        {/* Headline */}
+        <h2 className="text-xl sm:text-2xl font-bold tracking-tight text-white mb-2 max-w-xs">
+          We couldn&apos;t find{" "}
+          <span
+            className="text-transparent bg-clip-text"
+            style={{ backgroundImage: "linear-gradient(90deg, #6b66ff, #a78bfa)" }}
+          >
+            &ldquo;{query}&rdquo;
+          </span>
+        </h2>
+
+        {/* Body */}
+        <p className="text-muted text-xs sm:text-sm leading-relaxed max-w-xs mb-6">
+          This app isn&apos;t available yet.{" "}
+          <span className="text-white/60">Request it below and we&apos;ll do our best to add it.</span>
+        </p>
+
+        {/* CTA */}
+        <Link
+          href={`/support?request=${encodeURIComponent(query)}`}
+          className="inline-flex items-center gap-2 bg-white hover:bg-white/90 text-black font-bold px-5 py-2.5 rounded-full transition-all duration-300 hover:scale-105 active:scale-95 text-xs sm:text-sm mb-4"
+        >
+          <MessageCircle className="w-4 h-4" />
+          Request this App
+        </Link>
+
+        {/* Back link */}
+        <a href="/" className="text-white/30 text-xs hover:text-white/70 transition-colors">
+          ← Back to all apps
+        </a>
+
       </div>
     );
   }

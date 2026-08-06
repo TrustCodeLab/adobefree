@@ -69,7 +69,7 @@ export default async function LoginPage(props: {
         <div className="pt-2">
           <button
             formAction={login}
-            className="w-full bg-white hover:bg-white/90 text-black font-bold py-4 rounded-full transition-all duration-300 shadow-lg shadow-white/10 hover:shadow-white/20 hover:scale-[1.02] active:scale-[0.98] cursor-pointer"
+            className="w-full bg-white hover:bg-white/90 text-black font-bold py-4 rounded-full transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] cursor-pointer"
           >
             Sign In
           </button>

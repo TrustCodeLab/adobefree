@@ -34,7 +34,7 @@ export default async function CategoriesPage() {
               placeholder="e.g. Trending, Top Rated"
               className="flex-1 bg-white/5 border border-white/10 rounded-full py-3 sm:py-4 px-6 sm:px-8 text-white placeholder-white/20 focus:outline-none focus:border-accent/50 focus:ring-1 focus:ring-accent/50 transition-all text-base sm:text-lg"
             />
-            <button className="bg-white hover:bg-white/90 text-black font-bold py-3 px-6 sm:px-8 rounded-full transition-all hover:scale-105 active:scale-95 flex items-center justify-center gap-2 cursor-pointer shadow-lg shadow-white/5 flex-shrink-0">
+            <button className="bg-white hover:bg-white/90 text-black font-bold py-3 px-6 sm:px-8 rounded-full transition-all hover:scale-105 active:scale-95 flex items-center justify-center gap-2 cursor-pointer flex-shrink-0">
               <Plus className="w-4 h-4 sm:w-5 sm:h-5" />
               Add
             </button>

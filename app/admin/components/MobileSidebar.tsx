@@ -53,7 +53,7 @@ export function MobileSidebar({ signOutAction }: MobileSidebarProps) {
       {/* Mobile Menu Button - Only visible on mobile */}
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="lg:hidden fixed top-4 left-4 z-50 p-3 bg-card border border-card-border rounded-full shadow-lg hover:bg-white/5 transition-colors"
+        className="lg:hidden fixed top-4 left-4 z-50 p-3 bg-card border border-card-border rounded-full hover:bg-white/5 transition-colors"
         aria-label="Toggle menu"
       >
         {isOpen ? (
@@ -89,7 +89,7 @@ export function MobileSidebar({ signOutAction }: MobileSidebarProps) {
               href={link.href}
               onClick={() => setIsOpen(false)}
               className={`flex items-center gap-3 px-6 py-3 rounded-full transition-all duration-200 group relative overflow-hidden ${link.active
-                  ? "bg-white text-black font-bold shadow-lg shadow-white/10"
+                  ? "bg-white text-black font-bold"
                   : "text-muted hover:text-white hover:bg-white/5"
                 }`}
             >

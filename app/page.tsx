@@ -23,7 +23,7 @@ export default async function Home(props: {
   return (
     <div className="min-h-screen bg-background">
       {/* Navigation Header */}
-      <header className="sticky top-0 z-50 bg-background/80 backdrop-blur-lg border-b border-white/5 px-4 sm:px-6 lg:px-8 py-4 sm:py-6">
+      <header className="sticky top-0 z-50 bg-background/80 backdrop-blur-lg border-b border-white/5 px-4 sm:px-6 lg:px-8 py-3.5 sm:py-5">
         <div
           className="w-full mx-auto flex items-center justify-between gap-3 sm:gap-6 lg:gap-8"
           style={{ maxWidth: "calc(80rem + 2rem)" }}
@@ -46,14 +46,17 @@ export default async function Home(props: {
           </div>
 
           {/* Support Button */}
-          <Link href="/support" className="flex items-center gap-2 bg-white hover:bg-white/90 border border-transparent rounded-full px-3 sm:px-5 py-2 sm:py-[0.68rem] text-black font-medium transition-colors cursor-pointer flex-shrink-0 text-sm sm:text-base">
+          <Link
+            href="/support"
+            className="flex items-center justify-center gap-2 bg-white hover:bg-white/90 border border-transparent rounded-full w-9 h-9 sm:w-auto sm:h-auto sm:px-5 sm:py-2.5 text-black font-medium transition-all hover:scale-105 active:scale-95 cursor-pointer flex-shrink-0 text-sm sm:text-base"
+          >
             <Headset className="w-4 h-4 sm:w-5 sm:h-5" />
             <span className="hidden sm:block">Support</span>
           </Link>
         </div>
 
         {/* Mobile Search Bar - Below header on small screens */}
-        <div className="sm:hidden mt-3">
+        <div className="sm:hidden mt-3.5">
           <SearchBar compact={true} />
         </div>
       </header>
