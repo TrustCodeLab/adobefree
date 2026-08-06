@@ -2,22 +2,22 @@ import { createClient } from "../utils/supabase/server";
 import Link from "next/link";
 import Image from "next/image";
 import {
-  Plus,
-  Layers,
-  FolderTree,
-  LifeBuoy,
-  Activity,
-  Pencil,
-  Clock,
-  ExternalLink,
-  Sparkles,
-  MessageSquare,
-  ChevronRight,
-  ShieldCheck,
-  Package,
-  TrendingUp,
-  ArrowRight,
-} from "lucide-react";
+  PlusIcon,
+  RectangleStackIcon,
+  FolderIcon,
+  LifebuoyIcon,
+  SignalIcon,
+  PencilIcon,
+  ClockIcon,
+  ArrowTopRightOnSquareIcon,
+  SparklesIcon,
+  ChatBubbleLeftRightIcon,
+  ChevronRightIcon,
+  ShieldCheckIcon,
+  CubeIcon,
+  ArrowTrendingUpIcon,
+  ArrowRightIcon,
+} from "@heroicons/react/24/outline";
 
 export default async function AdminDashboard() {
   const supabase = await createClient();
@@ -123,7 +123,7 @@ export default async function AdminDashboard() {
               href="/admin/nfts/new"
               className="inline-flex items-center gap-2 bg-[#3ecf8e] hover:bg-[#34b27b] text-[#141414] font-bold text-xs sm:text-sm px-4 py-2.5 rounded-lg transition-all"
             >
-              <Plus className="w-4 h-4" />
+              <PlusIcon className="w-4 h-4" />
               <span>Add New App</span>
             </Link>
 
@@ -131,7 +131,7 @@ export default async function AdminDashboard() {
               href="/admin/categories"
               className="inline-flex items-center gap-2 bg-[#242424] hover:bg-[#2a2a2a] text-[#ededef] font-medium text-xs sm:text-sm px-4 py-2.5 rounded-lg border border-[#2e2e2e] transition-all"
             >
-              <FolderTree className="w-4 h-4 text-[#3ecf8e]" />
+              <FolderIcon className="w-4 h-4 text-[#3ecf8e]" />
               <span>Categories</span>
             </Link>
 
@@ -139,7 +139,7 @@ export default async function AdminDashboard() {
               href="/admin/support"
               className="inline-flex items-center gap-2 bg-[#242424] hover:bg-[#2a2a2a] text-[#ededef] font-medium text-xs sm:text-sm px-4 py-2.5 rounded-lg border border-[#2e2e2e] transition-all"
             >
-              <MessageSquare className="w-4 h-4 text-[#3ecf8e]" />
+              <ChatBubbleLeftRightIcon className="w-4 h-4 text-[#3ecf8e]" />
               <span>Support</span>
               <span className="ml-0.5 px-2 py-0.5 rounded-full text-[10px] font-bold bg-[#3ecf8e]/15 text-[#3ecf8e] border border-[#3ecf8e]/30">
                 {supportCount || 0}
@@ -152,7 +152,7 @@ export default async function AdminDashboard() {
               className="inline-flex items-center gap-1.5 bg-[#242424] hover:bg-[#2a2a2a] text-[#878c96] hover:text-[#ededef] font-medium text-xs sm:text-sm px-3.5 py-2.5 rounded-lg border border-[#2e2e2e] transition-all"
               title="Open store website"
             >
-              <ExternalLink className="w-3.5 h-3.5" />
+              <ArrowTopRightOnSquareIcon className="w-3.5 h-3.5" />
               <span className="hidden sm:inline">View Site</span>
             </Link>
           </div>
@@ -168,7 +168,7 @@ export default async function AdminDashboard() {
               Total Catalog
             </span>
             <div className="w-8 h-8 rounded-lg bg-[#242424] border border-[#2e2e2e] flex items-center justify-center text-[#3ecf8e] group-hover:scale-105 transition-transform">
-              <Layers className="w-4 h-4" />
+              <RectangleStackIcon className="w-4 h-4" />
             </div>
           </div>
           <div className="flex items-baseline justify-between pt-1">
@@ -176,12 +176,12 @@ export default async function AdminDashboard() {
               {nftsCount || 0}
             </h3>
             <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-[#3ecf8e]/10 text-[#3ecf8e] border border-[#3ecf8e]/20 flex items-center gap-1">
-              <TrendingUp className="w-3 h-3" /> Live
+              <ArrowTrendingUpIcon className="w-3 h-3" /> Live
             </span>
           </div>
           <div className="flex items-center justify-between pt-2 border-t border-[#2e2e2e] text-xs text-[#878c96]">
             <span>Published Software</span>
-            <span className="text-[#3ecf8e] font-medium flex items-center gap-1">View All <ChevronRight className="w-3 h-3 opacity-0 group-hover:opacity-100 transition-opacity" /></span>
+            <span className="text-[#3ecf8e] font-medium flex items-center gap-1">View All <ChevronRightIcon className="w-3 h-3 opacity-0 group-hover:opacity-100 transition-opacity" /></span>
           </div>
         </Link>
 
@@ -192,7 +192,7 @@ export default async function AdminDashboard() {
               Categories
             </span>
             <div className="w-8 h-8 rounded-lg bg-[#242424] border border-[#2e2e2e] flex items-center justify-center text-[#3ecf8e] group-hover:scale-105 transition-transform">
-              <FolderTree className="w-4 h-4" />
+              <FolderIcon className="w-4 h-4" />
             </div>
           </div>
           <div className="flex items-baseline justify-between pt-1">
@@ -205,7 +205,7 @@ export default async function AdminDashboard() {
           </div>
           <div className="flex items-center justify-between pt-2 border-t border-[#2e2e2e] text-xs text-[#878c96]">
             <span>Taxonomy Groups</span>
-            <span className="text-[#3ecf8e] font-medium flex items-center gap-1">Manage <ChevronRight className="w-3 h-3 opacity-0 group-hover:opacity-100 transition-opacity" /></span>
+            <span className="text-[#3ecf8e] font-medium flex items-center gap-1">Manage <ChevronRightIcon className="w-3 h-3 opacity-0 group-hover:opacity-100 transition-opacity" /></span>
           </div>
         </Link>
 
@@ -216,7 +216,7 @@ export default async function AdminDashboard() {
               Support Tickets
             </span>
             <div className="w-8 h-8 rounded-lg bg-[#242424] border border-[#2e2e2e] flex items-center justify-center text-[#3ecf8e] group-hover:scale-105 transition-transform">
-              <LifeBuoy className="w-4 h-4" />
+              <LifebuoyIcon className="w-4 h-4" />
             </div>
           </div>
           <div className="flex items-baseline justify-between pt-1">
@@ -229,7 +229,7 @@ export default async function AdminDashboard() {
           </div>
           <div className="flex items-center justify-between pt-2 border-t border-[#2e2e2e] text-xs text-[#878c96]">
             <span>User Feedback</span>
-            <span className="text-[#3ecf8e] font-medium flex items-center gap-1">View Tickets <ChevronRight className="w-3 h-3 opacity-0 group-hover:opacity-100 transition-opacity" /></span>
+            <span className="text-[#3ecf8e] font-medium flex items-center gap-1">View Tickets <ChevronRightIcon className="w-3 h-3 opacity-0 group-hover:opacity-100 transition-opacity" /></span>
           </div>
         </Link>
 
@@ -240,7 +240,7 @@ export default async function AdminDashboard() {
               Postgres & Storage
             </span>
             <div className="w-8 h-8 rounded-lg bg-[#242424] border border-[#2e2e2e] flex items-center justify-center text-[#3ecf8e] group-hover:scale-105 transition-transform">
-              <Activity className="w-4 h-4" />
+              <SignalIcon className="w-4 h-4" />
             </div>
           </div>
           <div className="pt-1">
@@ -256,9 +256,9 @@ export default async function AdminDashboard() {
           </div>
           <div className="flex items-center justify-between pt-2 border-t border-[#2e2e2e] text-xs text-[#878c96]">
             <span className="flex items-center gap-1 text-[#ededef] font-medium">
-              <ShieldCheck className="w-3.5 h-3.5 text-[#3ecf8e]" /> 99.9% Health
+              <ShieldCheckIcon className="w-3.5 h-3.5 text-[#3ecf8e]" /> 99.9% Health
             </span>
-            <span className="text-[#3ecf8e] font-medium flex items-center gap-1">Dashboard <ExternalLink className="w-3 h-3 opacity-0 group-hover:opacity-100 transition-opacity" /></span>
+            <span className="text-[#3ecf8e] font-medium flex items-center gap-1">Dashboard <ArrowTopRightOnSquareIcon className="w-3 h-3 opacity-0 group-hover:opacity-100 transition-opacity" /></span>
           </div>
         </a>
       </div>
@@ -271,7 +271,7 @@ export default async function AdminDashboard() {
             <div>
               <h3 className="text-lg font-bold text-[#ededef] flex items-center gap-2">
                 <div className="w-7 h-7 rounded-lg bg-[#242424] border border-[#2e2e2e] flex items-center justify-center text-[#3ecf8e]">
-                  <Package className="w-4 h-4" />
+                  <CubeIcon className="w-4 h-4" />
                 </div>
                 Recent Apps
               </h3>
@@ -282,21 +282,21 @@ export default async function AdminDashboard() {
               className="text-xs font-semibold text-[#3ecf8e] hover:underline flex items-center gap-1"
             >
               <span>View All ({nftsCount || 0})</span>
-              <ArrowRight className="w-3.5 h-3.5" />
+              <ArrowRightIcon className="w-3.5 h-3.5" />
             </Link>
           </div>
 
           {!recentApps || recentApps.length === 0 ? (
             <div className="p-8 rounded-xl bg-[#1c1c1c] border border-[#2e2e2e] text-center space-y-3">
               <div className="w-12 h-12 rounded-lg bg-[#242424] border border-[#2e2e2e] mx-auto flex items-center justify-center text-[#6b7280]">
-                <Layers className="w-6 h-6" />
+                <RectangleStackIcon className="w-6 h-6" />
               </div>
               <p className="text-[#ededef] font-semibold text-sm">No apps found</p>
               <Link
                 href="/admin/nfts/new"
                 className="inline-flex items-center gap-2 bg-[#3ecf8e] text-[#141414] font-bold text-xs px-4 py-2 rounded-lg hover:bg-[#34b27b] transition-all"
               >
-                <Plus className="w-4 h-4" /> Add App
+                <PlusIcon className="w-4 h-4" /> Add App
               </Link>
             </div>
           ) : (
@@ -342,7 +342,7 @@ export default async function AdminDashboard() {
                         <span className="text-[#ededef] font-medium">{app.creator || "Adobe"}</span>
                         <span>•</span>
                         <span className="flex items-center gap-1 text-[#878c96]">
-                          <Clock className="w-3 h-3" /> {formatDate(app.created_at)}
+                          <ClockIcon className="w-3 h-3" /> {formatDate(app.created_at)}
                         </span>
                       </div>
                     </div>
@@ -358,7 +358,7 @@ export default async function AdminDashboard() {
                       className="p-2 sm:px-3 sm:py-1.5 rounded-lg bg-[#242424] hover:bg-[#2a2a2a] text-[#ededef] hover:text-[#3ecf8e] transition-all border border-[#2e2e2e] flex items-center gap-1.5 text-xs font-medium"
                       title="Edit App Details"
                     >
-                      <Pencil className="w-3.5 h-3.5" />
+                      <PencilIcon className="w-3.5 h-3.5" />
                       <span className="hidden sm:inline">Edit</span>
                     </Link>
                   </div>
@@ -374,7 +374,7 @@ export default async function AdminDashboard() {
           <div className="rounded-xl bg-[#1c1c1c] border border-[#2e2e2e] p-5 space-y-4">
             <div className="flex items-center justify-between">
               <h3 className="text-base font-bold text-[#ededef] flex items-center gap-2">
-                <FolderTree className="w-4 h-4 text-[#3ecf8e]" /> Category Distribution
+                <FolderIcon className="w-4 h-4 text-[#3ecf8e]" /> Category Distribution
               </h3>
               <Link
                 href="/admin/categories"
@@ -417,7 +417,7 @@ export default async function AdminDashboard() {
           <div className="rounded-xl bg-[#1c1c1c] border border-[#2e2e2e] p-5 space-y-4">
             <div className="flex items-center justify-between">
               <h3 className="text-base font-bold text-[#ededef] flex items-center gap-2">
-                <MessageSquare className="w-4 h-4 text-[#3ecf8e]" /> Recent Support
+                <ChatBubbleLeftRightIcon className="w-4 h-4 text-[#3ecf8e]" /> Recent Support
               </h3>
               <Link
                 href="/admin/support"
@@ -456,7 +456,7 @@ export default async function AdminDashboard() {
           {/* Pro Tip Card */}
           <div className="rounded-xl p-4 bg-[#1c1c1c] border border-[#3ecf8e]/30 space-y-2 relative overflow-hidden">
             <div className="flex items-center gap-2 text-[#3ecf8e] text-xs font-bold">
-              <Sparkles className="w-4 h-4" /> Supabase Ordering Tip
+              <SparklesIcon className="w-4 h-4" /> Supabase Ordering Tip
             </div>
             <p className="text-[#878c96] text-xs leading-relaxed">
               Drag & drop software cards directly in the{" "}

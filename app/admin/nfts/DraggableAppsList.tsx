@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { Trash2, Pencil, Plus } from "lucide-react";
+import { TrashIcon, PencilIcon, PlusIcon } from "@heroicons/react/24/outline";
 import { deleteNFT, updateNFTOrder } from "./actions";
 
 interface NFT {
@@ -94,7 +94,7 @@ export default function DraggableAppsList({
                     href="/admin/nfts/new"
                     className="inline-flex items-center gap-2 bg-[#3ecf8e] text-[#141414] font-bold text-xs px-4 py-2 rounded-lg hover:bg-[#34b27b] transition-all mt-2"
                 >
-                    <Plus className="w-4 h-4" /> Create App Now
+                    <PlusIcon className="w-4 h-4" /> Create App Now
                 </Link>
             </div>
         );
@@ -138,14 +138,14 @@ export default function DraggableAppsList({
                                     className="p-1.5 text-[#6b7280] hover:text-[#ededef] hover:bg-[#242424] rounded-md transition-all border border-transparent hover:border-[#2e2e2e]"
                                     title="Edit App"
                                 >
-                                    <Pencil className="w-3.5 h-3.5" />
+                                    <PencilIcon className="w-3.5 h-3.5" />
                                 </Link>
                                 <button
                                     onClick={() => handleDelete(nft.id)}
                                     className="p-1.5 text-[#6b7280] hover:text-red-400 hover:bg-red-500/10 rounded-md transition-all border border-transparent hover:border-red-500/20 cursor-pointer"
                                     title="Delete App"
                                 >
-                                    <Trash2 className="w-3.5 h-3.5" />
+                                    <TrashIcon className="w-3.5 h-3.5" />
                                 </button>
                             </div>
                         </div>

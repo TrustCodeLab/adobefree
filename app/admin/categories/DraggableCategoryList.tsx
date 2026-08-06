@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Trash2, GripVertical } from "lucide-react";
+import { TrashIcon, Bars2Icon } from "@heroicons/react/24/outline";
 import { deleteCategory, updateCategoryOrder } from "./actions";
 
 interface Category {
@@ -109,7 +109,7 @@ export default function DraggableCategoryList({
         >
           <div className="flex items-center gap-3 min-w-0">
             <div className="p-1.5 rounded-lg bg-[#242424] border border-[#2e2e2e] text-[#6b7280] group-hover:text-[#3ecf8e] transition-colors">
-              <GripVertical className="w-4 h-4" />
+              <Bars2Icon className="w-4 h-4" />
             </div>
             
             <div className="flex items-center gap-2.5 flex-wrap min-w-0">
@@ -131,7 +131,7 @@ export default function DraggableCategoryList({
               className="p-2 rounded-lg text-[#6b7280] hover:text-red-400 hover:bg-red-500/10 border border-transparent hover:border-red-500/20 transition-all cursor-pointer"
               title="Delete Category"
             >
-              <Trash2 className="w-4 h-4" />
+              <TrashIcon className="w-4 h-4" />
             </button>
           </div>
         </div>

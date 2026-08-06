@@ -1,4 +1,4 @@
-import { LogOut } from "lucide-react";
+import { ArrowRightStartOnRectangleIcon } from "@heroicons/react/24/outline";
 import Image from "next/image";
 import { createClient } from "../utils/supabase/server";
 import { redirect } from "next/navigation";
@@ -80,7 +80,7 @@ export default async function AdminLayout({
 
           <form action={signOut}>
             <button className="w-full flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-[#1a1a1a] hover:bg-red-500/10 text-[#6b7280] hover:text-red-400 border border-[#2a2a2a] hover:border-red-500/20 text-xs font-semibold transition-all cursor-pointer">
-              <LogOut className="w-3.5 h-3.5" />
+              <ArrowRightStartOnRectangleIcon className="w-3.5 h-3.5" />
               <span>Sign Out</span>
             </button>
           </form>

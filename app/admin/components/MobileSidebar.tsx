@@ -5,14 +5,14 @@ import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 import {
-  LayoutDashboard,
-  Layers,
-  AppWindow,
-  Menu,
-  X,
-  LogOut,
-  LifeBuoy,
-} from "lucide-react";
+  Squares2X2Icon,
+  RectangleStackIcon,
+  WindowIcon,
+  Bars3Icon,
+  XMarkIcon,
+  ArrowRightStartOnRectangleIcon,
+  LifebuoyIcon,
+} from "@heroicons/react/24/outline";
 
 interface MobileSidebarProps {
   signOutAction: () => Promise<void>;
@@ -28,10 +28,10 @@ export function MobileSidebar({ signOutAction }: MobileSidebarProps) {
   };
 
   const links = [
-    { href: "/admin", label: "Overview", icon: LayoutDashboard },
-    { href: "/admin/categories", label: "Categories", icon: Layers },
-    { href: "/admin/nfts", label: "Apps", icon: AppWindow },
-    { href: "/admin/support", label: "Support", icon: LifeBuoy },
+    { href: "/admin", label: "Overview", icon: Squares2X2Icon },
+    { href: "/admin/categories", label: "Categories", icon: RectangleStackIcon },
+    { href: "/admin/nfts", label: "Apps", icon: WindowIcon },
+    { href: "/admin/support", label: "Support", icon: LifebuoyIcon },
   ];
 
   return (
@@ -43,9 +43,9 @@ export function MobileSidebar({ signOutAction }: MobileSidebarProps) {
         aria-label="Toggle menu"
       >
         {isOpen ? (
-          <X className="w-5 h-5 text-[#ededef]" />
+          <XMarkIcon className="w-5 h-5 text-[#ededef]" />
         ) : (
-          <Menu className="w-5 h-5 text-[#ededef]" />
+          <Bars3Icon className="w-5 h-5 text-[#ededef]" />
         )}
       </button>
 
@@ -115,7 +115,7 @@ export function MobileSidebar({ signOutAction }: MobileSidebarProps) {
         <div className="p-4 border-t border-[#2a2a2a]">
           <form action={signOutAction}>
             <button className="w-full flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg bg-[#1a1a1a] hover:bg-red-500/10 text-[#6b7280] hover:text-red-400 border border-[#2a2a2a] hover:border-red-500/20 text-xs font-semibold transition-all cursor-pointer">
-              <LogOut className="w-3.5 h-3.5" />
+              <ArrowRightStartOnRectangleIcon className="w-3.5 h-3.5" />
               <span>Sign Out</span>
             </button>
           </form>

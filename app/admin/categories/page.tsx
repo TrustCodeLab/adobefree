@@ -1,6 +1,6 @@
 import { createClient } from "../../utils/supabase/server";
 import { addCategory } from "./actions";
-import { Plus, FolderPlus, FolderTree, GripVertical, Layers } from "lucide-react";
+import { PlusIcon, FolderPlusIcon, FolderIcon, Bars2Icon, RectangleStackIcon } from "@heroicons/react/24/outline";
 import DraggableCategoryList from "./DraggableCategoryList";
 
 export default async function CategoriesPage() {
@@ -20,7 +20,7 @@ export default async function CategoriesPage() {
           <div className="space-y-1.5">
             <div className="flex items-center gap-2">
               <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-[#3ecf8e]/10 text-[#3ecf8e] border border-[#3ecf8e]/20">
-                <FolderTree className="w-3.5 h-3.5" /> App Taxonomy
+                <FolderIcon className="w-3.5 h-3.5" /> App Taxonomy
               </span>
               <span className="text-[#6b7280] text-xs font-medium">• Navigation Filters</span>
             </div>
@@ -35,7 +35,7 @@ export default async function CategoriesPage() {
           {/* Stats Badge */}
           <div className="px-4 py-2.5 rounded-xl bg-[#242424] border border-[#2e2e2e] flex items-center gap-3 self-start sm:self-auto">
             <div className="w-8 h-8 rounded-lg bg-[#1c1c1c] border border-[#2e2e2e] flex items-center justify-center text-[#3ecf8e]">
-              <Layers className="w-4 h-4" />
+              <RectangleStackIcon className="w-4 h-4" />
             </div>
             <div>
               <p className="text-xs text-[#878c96] font-medium">Total Categories</p>
@@ -52,7 +52,7 @@ export default async function CategoriesPage() {
       >
         <div className="flex items-center justify-between">
           <label className="text-sm font-bold text-[#ededef] flex items-center gap-2">
-            <FolderPlus className="w-4 h-4 text-[#3ecf8e]" />
+            <FolderPlusIcon className="w-4 h-4 text-[#3ecf8e]" />
             Add New Category
           </label>
           <span className="text-xs text-[#878c96] font-mono bg-[#242424] px-2.5 py-0.5 rounded-md border border-[#2e2e2e]">
@@ -71,7 +71,7 @@ export default async function CategoriesPage() {
           </div>
 
           <button className="bg-[#3ecf8e] hover:bg-[#34b27b] text-[#141414] font-bold py-2.5 px-5 rounded-lg transition-all flex items-center justify-center gap-2 cursor-pointer flex-shrink-0 text-sm">
-            <Plus className="w-4 h-4" />
+            <PlusIcon className="w-4 h-4" />
             <span>Create Category</span>
           </button>
         </div>
@@ -87,7 +87,7 @@ export default async function CategoriesPage() {
             </span>
           </div>
           <span className="text-[#878c96] text-xs font-medium flex items-center gap-1">
-            <GripVertical className="w-3.5 h-3.5 text-[#3ecf8e]" /> Drag to reorder
+            <Bars2Icon className="w-3.5 h-3.5 text-[#3ecf8e]" /> Drag to reorder
           </span>
         </div>
 

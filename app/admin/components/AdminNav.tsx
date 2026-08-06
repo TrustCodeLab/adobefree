@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { LayoutDashboard, Layers, AppWindow, LifeBuoy } from "lucide-react";
+import { Squares2X2Icon, RectangleStackIcon, WindowIcon, LifebuoyIcon } from "@heroicons/react/24/outline";
 
 export function AdminNav() {
   const pathname = usePathname();
@@ -13,10 +13,10 @@ export function AdminNav() {
   };
 
   const links = [
-    { href: "/admin", label: "Overview", icon: LayoutDashboard },
-    { href: "/admin/categories", label: "Categories", icon: Layers },
-    { href: "/admin/nfts", label: "Apps", icon: AppWindow },
-    { href: "/admin/support", label: "Support", icon: LifeBuoy },
+    { href: "/admin", label: "Overview", icon: Squares2X2Icon },
+    { href: "/admin/categories", label: "Categories", icon: RectangleStackIcon },
+    { href: "/admin/nfts", label: "Apps", icon: WindowIcon },
+    { href: "/admin/support", label: "Support", icon: LifebuoyIcon },
   ];
 
   return (

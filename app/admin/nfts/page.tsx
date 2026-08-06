@@ -1,6 +1,6 @@
 import { createClient } from '../../utils/supabase/server'
 import Link from 'next/link'
-import { Plus, AppWindow, GripVertical } from 'lucide-react'
+import { PlusIcon, WindowIcon, Bars2Icon } from '@heroicons/react/24/outline'
 import DraggableAppsList from './DraggableAppsList'
 
 export default async function NFTsPage() {
@@ -22,7 +22,7 @@ export default async function NFTsPage() {
                     <div className="space-y-1.5">
                         <div className="flex items-center gap-2">
                             <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-[#3ecf8e]/10 text-[#3ecf8e] border border-[#3ecf8e]/20">
-                                <AppWindow className="w-3.5 h-3.5" /> Software Store
+                                <WindowIcon className="w-3.5 h-3.5" /> Software Store
                             </span>
                             <span className="text-[#6b7280] text-xs font-medium">• Storefront Apps</span>
                         </div>
@@ -39,7 +39,7 @@ export default async function NFTsPage() {
                             href="/admin/nfts/new" 
                             className="bg-[#3ecf8e] hover:bg-[#34b27b] text-[#141414] font-bold text-xs sm:text-sm px-4 py-2.5 rounded-lg transition-all flex items-center gap-2"
                         >
-                            <Plus className="w-4 h-4" />
+                            <PlusIcon className="w-4 h-4" />
                             <span>Add New App</span>
                         </Link>
                     </div>
@@ -56,7 +56,7 @@ export default async function NFTsPage() {
                         </span>
                     </div>
                     <span className="text-[#878c96] text-xs font-medium flex items-center gap-1">
-                        <GripVertical className="w-3.5 h-3.5 text-[#3ecf8e]" /> Drag cards to reorder
+                        <Bars2Icon className="w-3.5 h-3.5 text-[#3ecf8e]" /> Drag cards to reorder
                     </span>
                 </div>
 
