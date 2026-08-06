@@ -49,9 +49,9 @@ export default async function NFTsPage() {
             {/* Draggable Apps List Container */}
             <div className="space-y-3">
                 <div className="flex items-center justify-between px-1">
-                    <div className="flex items-center gap-2">
-                        <h3 className="text-lg font-bold text-[#ededef]">Catalog Titles</h3>
-                        <span className="px-2 py-0.5 rounded-full text-xs font-mono font-bold bg-[#3ecf8e]/10 text-[#3ecf8e] border border-[#3ecf8e]/20">
+                    <div className="flex items-center gap-2.5">
+                        <h3 className="text-lg font-bold text-[#ededef]">All Apps</h3>
+                        <span className="inline-flex items-center justify-center px-2.5 py-0.5 rounded-full text-xs font-mono font-bold bg-[#3ecf8e]/10 text-[#3ecf8e] border border-[#3ecf8e]/20">
                             {totalApps}
                         </span>
                     </div>
