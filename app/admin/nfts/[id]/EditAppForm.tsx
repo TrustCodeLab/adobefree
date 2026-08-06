@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useRef } from "react";
-import { Upload, X } from "lucide-react";
+import { ArrowUpTrayIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import Image from "next/image";
 import { updateNFT } from "../actions";
 
@@ -121,14 +121,14 @@ export default function EditAppForm({ nft, categories }: EditAppFormProps) {
                   onClick={clearPreview}
                   className="p-2.5 bg-red-500/20 text-red-400 rounded-lg hover:bg-red-500 hover:text-white transition-colors"
                 >
-                  <X className="w-5 h-5" />
+                  <XMarkIcon className="w-5 h-5" />
                 </button>
                 <button
                   type="button"
                   onClick={triggerFileInput}
                   className="p-2.5 bg-[#242424] text-[#ededef] rounded-lg hover:bg-[#2a2a2a] transition-colors cursor-pointer border border-[#2e2e2e]"
                 >
-                  <Upload className="w-5 h-5" />
+                  <ArrowUpTrayIcon className="w-5 h-5" />
                 </button>
               </div>
             </div>
@@ -139,7 +139,7 @@ export default function EditAppForm({ nft, categories }: EditAppFormProps) {
             >
               <div className="flex flex-col items-center gap-2 pointer-events-none p-4">
                 <div className="p-2.5 bg-[#242424] rounded-lg group-hover:bg-[#3ecf8e]/10 transition-colors">
-                  <Upload className="w-5 h-5 text-[#6b7280] group-hover:text-[#3ecf8e]" />
+                  <ArrowUpTrayIcon className="w-5 h-5 text-[#6b7280] group-hover:text-[#3ecf8e]" />
                 </div>
                 <div className="space-y-0.5">
                   <p className="text-[#ededef] font-semibold text-xs">
@@ -181,14 +181,14 @@ export default function EditAppForm({ nft, categories }: EditAppFormProps) {
                   onClick={clearProductPreview}
                   className="p-2.5 bg-red-500/20 text-red-400 rounded-lg hover:bg-red-500 hover:text-white transition-colors"
                 >
-                  <X className="w-5 h-5" />
+                  <XMarkIcon className="w-5 h-5" />
                 </button>
                 <button
                   type="button"
                   onClick={triggerProductFileInput}
                   className="p-2.5 bg-[#242424] text-[#ededef] rounded-lg hover:bg-[#2a2a2a] transition-colors cursor-pointer border border-[#2e2e2e]"
                 >
-                  <Upload className="w-5 h-5" />
+                  <ArrowUpTrayIcon className="w-5 h-5" />
                 </button>
               </div>
             </div>
@@ -199,7 +199,7 @@ export default function EditAppForm({ nft, categories }: EditAppFormProps) {
             >
               <div className="flex flex-col items-center gap-2 pointer-events-none p-4">
                 <div className="p-2.5 bg-[#242424] rounded-lg group-hover:bg-[#3ecf8e]/10 transition-colors">
-                  <Upload className="w-5 h-5 text-[#6b7280] group-hover:text-[#3ecf8e]" />
+                  <ArrowUpTrayIcon className="w-5 h-5 text-[#6b7280] group-hover:text-[#3ecf8e]" />
                 </div>
                 <div className="space-y-0.5">
                   <p className="text-[#ededef] font-semibold text-xs">
