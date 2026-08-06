@@ -28,7 +28,7 @@ export const metadata: Metadata = {
   creator: "Adobe Free",
   publisher: "Adobe Free",
   openGraph: {
-    title: "Adobe Free Download - Get All Adobe Apps for Free",
+    title: "Adobe Free Download | Get All Adobe Apps for Free",
     description: "Download all Adobe Creative Cloud apps for free. Photoshop, Illustrator, Premiere Pro, and more.",
     url: process.env.NEXT_PUBLIC_BASE_URL || "https://adobefree.com",
     siteName: "Adobe Free",
