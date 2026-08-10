@@ -1,17 +1,13 @@
 import SearchBar from "./components/SearchBar";
 import NFTStoreClient from "./components/NFTStoreClient";
+import CardSkeleton from "./components/CardSkeleton";
 import { Headset } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { createClient } from "./utils/supabase/server";
+import { Suspense } from "react";
 
-export default async function Home(props: {
-  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
-}) {
-  const searchParams = await props.searchParams;
-  const query =
-    typeof searchParams.q === "string" ? searchParams.q.toLowerCase() : "";
-
+async function StoreContent({ query }: { query: string }) {
   const supabase = await createClient();
 
   // Fetch Categories with their NFTs, ordered by category creation
@@ -19,6 +15,21 @@ export default async function Home(props: {
     .from("categories")
     .select("*, nfts(*)")
     .order("display_order", { ascending: true });
+
+  return (
+    <NFTStoreClient
+      initialData={categoriesWithNFTs || []}
+      query={query}
+    />
+  );
+}
+
+export default async function Home(props: {
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
+}) {
+  const searchParams = await props.searchParams;
+  const query =
+    typeof searchParams.q === "string" ? searchParams.q.toLowerCase() : "";
 
   return (
     <div className="min-h-screen bg-background">
@@ -42,7 +53,9 @@ export default async function Home(props: {
 
           {/* Search Bar - Hidden on very small screens */}
           <div className="hidden sm:flex flex-1 justify-center">
-            <SearchBar />
+            <Suspense fallback={<div className="w-full max-w-xl h-11 bg-white/5 border border-white/10 rounded-full animate-pulse" />}>
+              <SearchBar />
+            </Suspense>
           </div>
 
           {/* Support Button */}
@@ -57,17 +70,18 @@ export default async function Home(props: {
 
         {/* Mobile Search Bar - Below header on small screens */}
         <div className="sm:hidden mt-3.5">
-          <SearchBar compact={true} />
+          <Suspense fallback={<div className="w-full h-10 bg-white/5 border border-white/10 rounded-full animate-pulse" />}>
+            <SearchBar compact={true} />
+          </Suspense>
         </div>
       </header>
 
       {/* Main Content */}
       <main className="p-4 sm:p-6 lg:p-8">
         <div className="w-full max-w-7xl mx-auto space-y-8 sm:space-y-12">
-          <NFTStoreClient
-            initialData={categoriesWithNFTs || []}
-            query={query}
-          />
+          <Suspense fallback={<CardSkeleton />}>
+            <StoreContent query={query} />
+          </Suspense>
         </div>
       </main>
     </div>

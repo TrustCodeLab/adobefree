@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import Image from "next/image";
 import { Share2, Heart, CloudDownload, DollarSign, Check } from "lucide-react";
 import { toast } from "sonner";
-import { getFileSize } from "./actions";
+
 
 interface NFTCardProps {
   id: string;
@@ -78,7 +78,7 @@ export default function NFTCard({
   return (
     <article
       onClick={onDetailsClick}
-      className="cursor-pointer bg-card rounded-[1.5rem] sm:rounded-[2rem] lg:rounded-[2.5rem] border border-card-border flex flex-col group transition-all duration-500 ease-out hover:!border-white/15 hover:shadow-2xl hover:shadow-accent/5"
+      className="cursor-pointer bg-card rounded-[1.5rem] sm:rounded-[2rem] lg:rounded-[2.5rem] border border-card-border flex flex-col group transition-all duration-500 ease-out hover:!border-white/15"
       itemScope
       itemType="https://schema.org/SoftwareApplication"
     >

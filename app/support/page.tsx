@@ -5,6 +5,7 @@ import Link from "next/link"
 import { useSearchParams } from "next/navigation"
 import { ArrowLeft, MessageCircle, CheckCircle2, Loader2 } from "lucide-react"
 import { submitSupportRequest } from "./actions"
+import { toast } from "sonner"
 
 function SupportForm() {
   const searchParams = useSearchParams()
@@ -22,11 +23,16 @@ function SupportForm() {
       const result = await submitSupportRequest(formData)
       if (result.error) {
         setError(result.error)
+        toast.error(result.error)
       } else if (result.success) {
         setIsSuccess(true)
+        toast.success("Your message has been submitted successfully!", {
+          icon: <CheckCircle2 className="w-5 h-5 text-emerald-400" />
+        })
       }
     } catch {
       setError("An unexpected error occurred. Please try again.")
+      toast.error("An unexpected error occurred. Please try again.")
     } finally {
       setIsSubmitting(false)
     }

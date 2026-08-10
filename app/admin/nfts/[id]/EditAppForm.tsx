@@ -22,6 +22,7 @@ interface NFT {
   description?: string | null;
   downloads: number;
   badge_text?: string | null;
+  file_size?: string | null;
 }
 
 interface EditAppFormProps {
@@ -281,7 +282,7 @@ export default function EditAppForm({ nft, categories }: EditAppFormProps) {
       </div>
 
       {/* Category & Downloads */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
         <div className="space-y-2">
           <label className="text-xs font-semibold text-[#878c96] block">
             Category
@@ -318,6 +319,18 @@ export default function EditAppForm({ nft, categories }: EditAppFormProps) {
               </svg>
             </div>
           </div>
+        </div>
+        <div className="space-y-2">
+          <label className="text-xs font-semibold text-[#878c96] block">
+            File Size
+          </label>
+          <input
+            name="file_size"
+            type="text"
+            defaultValue={nft.file_size || ""}
+            placeholder="e.g. 2.4 GB"
+            className="w-full bg-[#141414] border border-[#2e2e2e] rounded-lg py-2.5 px-4 text-[#ededef] placeholder-[#6b7280] focus:outline-none focus:border-[#3ecf8e] focus:ring-1 focus:ring-[#3ecf8e] transition-all text-sm font-medium"
+          />
         </div>
         <div className="space-y-2">
           <label className="text-xs font-semibold text-[#878c96] block">

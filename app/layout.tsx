@@ -3,11 +3,14 @@ import { Manrope } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "sonner";
 import { Analytics } from "@vercel/analytics/next";
+import { Suspense } from "react";
+import TopProgressBar from "./components/TopProgressBar";
 
 const manrope = Manrope({
   variable: "--font-manrope",
   subsets: ["latin"],
   display: "swap",
+  fallback: ["system-ui", "-apple-system", "BlinkMacSystemFont", "Segoe UI", "Roboto", "sans-serif"],
 });
 
 export const metadata: Metadata = {
@@ -84,6 +87,9 @@ export default function RootLayout({
       <body
         className={`${manrope.variable} font-sans antialiased`}
       >
+        <Suspense fallback={null}>
+          <TopProgressBar />
+        </Suspense>
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
@@ -91,6 +97,7 @@ export default function RootLayout({
         <Toaster
           position="top-center"
           theme="dark"
+          expand={false}
           toastOptions={{
             className: "glass-toast",
             style: {

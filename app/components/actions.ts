@@ -7,14 +7,25 @@ export async function getFileSize(id: string) {
 
   const { data: nft } = await supabase
     .from("nfts")
-    .select("time_left")
+    .select("time_left, file_size")
     .eq("id", id)
     .single();
 
-  if (!nft || !nft.time_left) {
+  if (!nft) {
     return null;
   }
 
+  // If file_size is already cached in the DB, return it instantly
+  if (nft.file_size) {
+    return nft.file_size as number;
+  }
+
+  // No download URL means no file size to fetch
+  if (!nft.time_left) {
+    return null;
+  }
+
+  // Fetch file size from the remote URL
   try {
     const controller = new AbortController();
     const timeoutId = setTimeout(() => controller.abort(), 5000);
@@ -55,7 +66,20 @@ export async function getFileSize(id: string) {
       }
 
       clearTimeout(timeoutId);
-      return contentLength ? parseInt(contentLength, 10) : null;
+
+      if (contentLength) {
+        const sizeInBytes = parseInt(contentLength, 10);
+
+        // Cache the file size in Supabase so future loads are instant
+        await supabase
+          .from("nfts")
+          .update({ file_size: sizeInBytes })
+          .eq("id", id);
+
+        return sizeInBytes;
+      }
+
+      return null;
     } catch (e) {
       clearTimeout(timeoutId);
       throw e;

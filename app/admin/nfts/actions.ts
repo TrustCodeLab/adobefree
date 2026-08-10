@@ -26,6 +26,7 @@ export async function createNFT(prevState: ActionState, formData: FormData): Pro
         const time_left = formData.get('time_left') as string
         const description = formData.get('description') as string
         const badge_text = formData.get('badge_text') as string
+        const file_size = formData.get('file_size') as string
 
         const imageFile = formData.get('image') as File
         const productImageFile = formData.get('product_image') as File
@@ -84,6 +85,7 @@ export async function createNFT(prevState: ActionState, formData: FormData): Pro
             display_order: nextOrder,
             description,
             badge_text: badge_text || null,
+            file_size: file_size || null,
             downloads: formData.get('downloads') ? parseInt(formData.get('downloads') as string) : 0
         })
 
@@ -131,6 +133,15 @@ export async function updateNFT(formData: FormData) {
     const time_left = formData.get('time_left') as string
     const description = formData.get('description') as string
     const badge_text = formData.get('badge_text') as string
+    const file_size = formData.get('file_size') as string
+
+    // Check if download URL changed — if so, clear cached file_size
+    const { data: currentNft } = await supabase
+        .from('nfts')
+        .select('time_left')
+        .eq('id', id)
+        .single()
+    const downloadUrlChanged = currentNft?.time_left !== time_left
 
     // Card Image
     const imageFile = formData.get('image') as File
@@ -170,6 +181,7 @@ export async function updateNFT(formData: FormData) {
         time_left,
         description,
         badge_text: badge_text || null,
+        file_size: file_size || null,
         downloads: formData.get('downloads') ? parseInt(formData.get('downloads') as string) : 0,
         image_url: publicUrl,
         product_image_url: productImageUrl || null
