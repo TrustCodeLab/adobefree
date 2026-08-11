@@ -3,8 +3,6 @@ import { Manrope } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "sonner";
 import { Analytics } from "@vercel/analytics/next";
-import { Suspense } from "react";
-import TopProgressBar from "./components/TopProgressBar";
 
 const manrope = Manrope({
   variable: "--font-manrope",
@@ -87,9 +85,6 @@ export default function RootLayout({
       <body
         className={`${manrope.variable} font-sans antialiased`}
       >
-        <Suspense fallback={null}>
-          <TopProgressBar />
-        </Suspense>
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
