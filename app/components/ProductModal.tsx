@@ -1,6 +1,6 @@
 "use client";
 
-import { X, DollarSign, CloudDownload, Share2, Heart, HardDrive, ShieldCheck } from "lucide-react";
+import { X, DollarSign, CloudDownload, Share2, Bookmark, HardDrive, ShieldCheck } from "lucide-react";
 import Image from "next/image";
 import { toast } from "sonner";
 import { useState, useEffect } from "react";
@@ -77,6 +77,21 @@ export default function ProductModal({ product, onClose }: ProductModalProps) {
       return;
     }
 
+    // Save to localStorage download history
+    try {
+      const existing = JSON.parse(localStorage.getItem("download-history") || "[]");
+      const newEntry = {
+        id: product.id,
+        title: product.title,
+        image: product.image,
+        creator: product.creator,
+        timestamp: Date.now(),
+      };
+      // Keep unique by id, most recent first, max 20
+      const filtered = existing.filter((e: { id: string }) => e.id !== product.id);
+      localStorage.setItem("download-history", JSON.stringify([newEntry, ...filtered].slice(0, 20)));
+    } catch {}
+
     toast.success("Your download has started", {
       icon: <CloudDownload className="w-5 h-5 text-emerald-400 animate-bounce" />
     });
@@ -133,9 +148,10 @@ export default function ProductModal({ product, onClose }: ProductModalProps) {
             </button>
             <button
               onClick={handleLike}
-              className="w-10 h-10 rounded-full bg-black/40 border border-white/10 flex items-center justify-center transition-all hover:bg-pink-500 hover:border-pink-500 hover:scale-110 backdrop-blur-md cursor-pointer"
+              className="w-10 h-10 rounded-full bg-black/40 border border-white/10 flex items-center justify-center transition-all hover:bg-accent hover:border-accent hover:scale-110 backdrop-blur-md cursor-pointer"
+              title="Save app"
             >
-              <Heart
+              <Bookmark
                 className={`w-4 h-4 ${isLiked ? "fill-white text-white" : "text-white"}`}
               />
             </button>

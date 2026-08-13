@@ -9,10 +9,11 @@ const manrope = Manrope({
   subsets: ["latin"],
   display: "swap",
   fallback: ["system-ui", "-apple-system", "BlinkMacSystemFont", "Segoe UI", "Roboto", "sans-serif"],
+  adjustFontFallback: false,
 });
 
 export const metadata: Metadata = {
-  title: "Adobe Free Download - Get All Adobe Apps for Free",
+  title: "Adobe Free Download | Get All Adobe Apps for Free",
   description: "Download Adobe Photoshop, Illustrator, Premiere Pro, After Effects and more for free. Direct download links for all Adobe Creative Cloud apps safe and secure.",
   keywords: [
     "adobe free",

@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Image from "next/image";
-import { Share2, Heart, CloudDownload, DollarSign, Check } from "lucide-react";
+import { Share2, Bookmark, CloudDownload, DollarSign, Check } from "lucide-react";
 import { toast } from "sonner";
 
 
@@ -121,9 +121,10 @@ export default function NFTCard({
           </button>
           <button
             onClick={handleLike}
-            className="w-7 h-7 sm:w-9 sm:h-9 rounded-full bg-[#1c1e26] border border-white/10 flex items-center justify-center transition-all duration-300 hover:scale-110 hover:bg-pink-500 hover:border-pink-500 cursor-pointer group/btn"
+            className="w-7 h-7 sm:w-9 sm:h-9 rounded-full bg-[#1c1e26] border border-white/10 flex items-center justify-center transition-all duration-300 hover:scale-110 hover:bg-accent hover:border-accent cursor-pointer group/btn"
+            title="Save app"
           >
-            <Heart
+            <Bookmark
               className={`w-3 h-3 sm:w-4 sm:h-4 transition-colors ${isLiked ? "text-white fill-white" : "text-white/70 group-hover/btn:text-white"}`}
             />
           </button>
