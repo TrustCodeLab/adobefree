@@ -1,16 +1,11 @@
 import type { Metadata } from "next";
-import { Manrope } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "sonner";
 import { Analytics } from "@vercel/analytics/next";
 
-const manrope = Manrope({
+const manrope = {
   variable: "--font-manrope",
-  subsets: ["latin"],
-  display: "swap",
-  fallback: ["system-ui", "-apple-system", "BlinkMacSystemFont", "Segoe UI", "Roboto", "sans-serif"],
-  adjustFontFallback: false,
-});
+};
 
 export const metadata: Metadata = {
   title: "Adobe Free Download | Get All Adobe Apps for Free",
