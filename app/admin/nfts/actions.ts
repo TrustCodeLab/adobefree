@@ -30,9 +30,11 @@ export async function createNFT(prevState: ActionState, formData: FormData): Pro
 
         const imageFile = formData.get('image') as File
         const productImageFile = formData.get('product_image') as File
+        const iconFile = formData.get('icon') as File
 
         let publicUrl = ''
         let productImageUrl = ''
+        let iconUrl = ''
 
         // Upload Card Image
         if (imageFile && imageFile.size > 0) {
@@ -50,15 +52,13 @@ export async function createNFT(prevState: ActionState, formData: FormData): Pro
             return { error: "Card Image is required." }
         }
 
-        // Upload Product Image (Optional, or fallback to Card Image?)
-        // Let's make it optional - if not provided, just leave null or use logic elsewhere
+        // Upload Product Image (Modal Cover)
         if (productImageFile && productImageFile.size > 0) {
             const filename = `product-${Date.now()}-${productImageFile.name.replace(/[^a-zA-Z0-9.-]/g, '')}`
             const { error } = await supabase.storage.from('nfts').upload(filename, productImageFile)
 
             if (error) {
                 console.error('Supabase Storage Upload Error (Product):', error)
-                // Don't fail entire creation for this? Or strictly fail? Let's fail to be safe.
                 return { error: `Product Image Upload failed: ${error.message}` }
             }
 
@@ -66,7 +66,21 @@ export async function createNFT(prevState: ActionState, formData: FormData): Pro
             productImageUrl = urlData.publicUrl
         }
 
-        const { data: maxOrderData, error: orderError } = await supabase
+        // Upload App Icon (Square Logo)
+        if (iconFile && iconFile.size > 0) {
+            const filename = `icon-${Date.now()}-${iconFile.name.replace(/[^a-zA-Z0-9.-]/g, '')}`
+            const { error } = await supabase.storage.from('nfts').upload(filename, iconFile)
+
+            if (error) {
+                console.error('Supabase Storage Upload Error (Icon):', error)
+                return { error: `App Icon Upload failed: ${error.message}` }
+            }
+
+            const { data: urlData } = supabase.storage.from('nfts').getPublicUrl(filename)
+            iconUrl = urlData.publicUrl
+        }
+
+        const { data: maxOrderData } = await supabase
             .from('nfts')
             .select('display_order')
             .order('display_order', { ascending: false })
@@ -74,20 +88,30 @@ export async function createNFT(prevState: ActionState, formData: FormData): Pro
 
         const nextOrder = (maxOrderData?.[0]?.display_order ?? -1) + 1
 
-        const { error: insertError } = await supabase.from('nfts').insert({
+        const insertPayload: Record<string, unknown> = {
             title,
             creator,
             price,
             category_id,
             time_left,
             image_url: publicUrl,
-            product_image_url: productImageUrl || null, // Allow null if not uploaded
+            product_image_url: productImageUrl || null,
+            icon_url: iconUrl || null,
             display_order: nextOrder,
             description,
             badge_text: badge_text || null,
             file_size: file_size || null,
             downloads: formData.get('downloads') ? parseInt(formData.get('downloads') as string) : 0
-        })
+        }
+
+        let { error: insertError } = await supabase.from('nfts').insert(insertPayload)
+
+        // Graceful fallback if icon_url column does not exist yet
+        if (insertError && insertError.message?.includes('icon_url')) {
+            delete insertPayload.icon_url
+            const fallbackResult = await supabase.from('nfts').insert(insertPayload)
+            insertError = fallbackResult.error
+        }
 
         if (insertError) {
             console.error('Supabase DB Insert Error:', insertError)
@@ -135,21 +159,17 @@ export async function updateNFT(formData: FormData) {
     const badge_text = formData.get('badge_text') as string
     const file_size = formData.get('file_size') as string
 
-    // Check if download URL changed — if so, clear cached file_size
-    const { data: currentNft } = await supabase
-        .from('nfts')
-        .select('time_left')
-        .eq('id', id)
-        .single()
-    const downloadUrlChanged = currentNft?.time_left !== time_left
-
     // Card Image
     const imageFile = formData.get('image') as File
     let publicUrl = formData.get('current_image_url') as string
 
-    // Product Image
+    // Product Image (Modal Cover)
     const productImageFile = formData.get('product_image') as File
     let productImageUrl = formData.get('current_product_image_url') as string
+
+    // App Icon
+    const iconFile = formData.get('icon') as File
+    let iconUrl = (formData.get('current_icon_url') as string) || ''
 
     // Handle Card Image Upload
     if (imageFile && imageFile.size > 0) {
@@ -173,7 +193,18 @@ export async function updateNFT(formData: FormData) {
         }
     }
 
-    await supabase.from('nfts').update({
+    // Handle App Icon Upload
+    if (iconFile && iconFile.size > 0) {
+        const filename = `icon-${Date.now()}-${iconFile.name.replace(/[^a-zA-Z0-9.-]/g, '')}`
+        const { error } = await supabase.storage.from('nfts').upload(filename, iconFile)
+
+        if (!error) {
+            const { data: urlData } = supabase.storage.from('nfts').getPublicUrl(filename)
+            iconUrl = urlData.publicUrl
+        }
+    }
+
+    const updatePayload: Record<string, unknown> = {
         title,
         creator,
         price,
@@ -184,8 +215,17 @@ export async function updateNFT(formData: FormData) {
         file_size: file_size || null,
         downloads: formData.get('downloads') ? parseInt(formData.get('downloads') as string) : 0,
         image_url: publicUrl,
-        product_image_url: productImageUrl || null
-    }).eq('id', id)
+        product_image_url: productImageUrl || null,
+        icon_url: iconUrl || null
+    }
+
+    let { error: updateError } = await supabase.from('nfts').update(updatePayload).eq('id', id)
+
+    // Graceful fallback if icon_url column does not exist yet
+    if (updateError && updateError.message?.includes('icon_url')) {
+        delete updatePayload.icon_url
+        await supabase.from('nfts').update(updatePayload).eq('id', id)
+    }
 
     revalidatePath('/admin/nfts')
     revalidatePath('/admin')

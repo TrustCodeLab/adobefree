@@ -238,6 +238,7 @@ type ProductData = {
   title: string;
   description?: string;
   product_image_url?: string;
+  icon_url?: string | null;
   creator: string;
   price: string;
   timeLeft: string;
@@ -259,10 +260,36 @@ function DownloadsPanel({
   const [items, setItems] = useState<DownloadEntry[]>([]);
 
   useEffect(() => {
-    try {
-      const raw = localStorage.getItem("download-history");
-      if (raw) setItems(JSON.parse(raw));
-    } catch {}
+    async function load() {
+      try {
+        const raw = localStorage.getItem("download-history");
+        if (!raw) return;
+        const parsed: DownloadEntry[] = JSON.parse(raw);
+        if (parsed.length === 0) return;
+
+        setItems(parsed);
+
+        // Fetch fresh app icons so previous download history displays clean icons
+        const ids = parsed.map((p) => p.id);
+        const supabase = createClient();
+        const { data } = await supabase
+          .from("nfts")
+          .select("id, image_url, product_image_url, icon_url")
+          .in("id", ids);
+
+        if (data && data.length > 0) {
+          const iconMap = new Map(
+            data.map((r) => [r.id, r.icon_url || r.product_image_url || r.image_url])
+          );
+          const updated = parsed.map((item) => ({
+            ...item,
+            image: iconMap.get(item.id) || item.image,
+          }));
+          setItems(updated);
+        }
+      } catch {}
+    }
+    load();
   }, []);
 
   const clearAll = () => {
@@ -312,8 +339,8 @@ function DownloadsPanel({
                 className="flex items-center gap-3 flex-1 min-w-0 text-left cursor-pointer"
                 disabled={fetchingId === item.id}
               >
-                <div className="relative w-9 h-9 rounded-lg overflow-hidden shrink-0 bg-white/5 flex items-center justify-center">
-                  <Image src={item.image} alt={item.title} fill className="object-cover" sizes="36px" />
+                <div className="relative w-9 h-9 rounded-lg overflow-hidden shrink-0 flex items-center justify-center">
+                  <Image src={item.image} alt={item.title} fill className="object-contain" sizes="36px" />
                   {fetchingId === item.id && (
                     <div className="absolute inset-0 bg-black/50 flex items-center justify-center rounded-lg">
                       <Loader2 className="w-3.5 h-3.5 text-white animate-spin" />
@@ -360,7 +387,6 @@ function SavedPanel({
   useEffect(() => {
     async function load() {
       try {
-        const history: DownloadEntry[] = JSON.parse(localStorage.getItem("download-history") || "[]");
         const savedIds: string[] = [];
         for (let i = 0; i < localStorage.length; i++) {
           const key = localStorage.key(i);
@@ -369,37 +395,27 @@ function SavedPanel({
           }
         }
 
-        if (savedIds.length === 0) { setLoading(false); return; }
-
-        const withMeta: SavedEntry[] = [];
-        const missingIds: string[] = [];
-        for (const id of savedIds) {
-          const meta = history.find((h) => h.id === id);
-          if (meta) {
-            withMeta.push({ id: meta.id, title: meta.title, image: meta.image, creator: meta.creator });
-          } else {
-            missingIds.push(id);
-          }
+        if (savedIds.length === 0) {
+          setItems([]);
+          setLoading(false);
+          return;
         }
 
-        let fetched: SavedEntry[] = [];
-        if (missingIds.length > 0) {
-          const supabase = createClient();
-          const { data } = await supabase
-            .from("nfts")
-            .select("id, title, image_url, creator")
-            .in("id", missingIds);
-          if (data) {
-            fetched = data.map((r) => ({
-              id: r.id,
-              title: r.title,
-              image: r.image_url || "",
-              creator: r.creator || "",
-            }));
-          }
-        }
+        const supabase = createClient();
+        const { data } = await supabase
+          .from("nfts")
+          .select("id, title, image_url, product_image_url, icon_url, creator")
+          .in("id", savedIds);
 
-        setItems([...withMeta, ...fetched]);
+        if (data) {
+          const fetched: SavedEntry[] = data.map((r) => ({
+            id: r.id,
+            title: r.title,
+            image: r.icon_url || r.product_image_url || r.image_url || "",
+            creator: r.creator || "",
+          }));
+          setItems(fetched);
+        }
       } catch {}
       setLoading(false);
     }
@@ -452,9 +468,9 @@ function SavedPanel({
                 className="flex items-center gap-3 flex-1 min-w-0 text-left cursor-pointer"
                 disabled={fetchingId === item.id}
               >
-                <div className="relative w-9 h-9 rounded-lg overflow-hidden shrink-0 bg-white/5 flex items-center justify-center">
+                <div className="relative w-9 h-9 rounded-lg overflow-hidden shrink-0 flex items-center justify-center">
                   {item.image ? (
-                    <Image src={item.image} alt={item.title} fill className="object-cover" sizes="36px" />
+                    <Image src={item.image} alt={item.title} fill className="object-contain" sizes="36px" />
                   ) : (
                     <Bookmark className="w-3.5 h-3.5 text-white/20" />
                   )}
@@ -503,6 +519,32 @@ export default function Header() {
     return () => document.removeEventListener("mousedown", handleClick);
   }, [openPanel]);
 
+  const [hasSaved, setHasSaved] = useState(false);
+
+  useEffect(() => {
+    function checkSaved() {
+      try {
+        let found = false;
+        for (let i = 0; i < localStorage.length; i++) {
+          const key = localStorage.key(i);
+          if (key?.startsWith("liked-") && localStorage.getItem(key) === "true") {
+            found = true;
+            break;
+          }
+        }
+        setHasSaved(found);
+      } catch {}
+    }
+
+    checkSaved();
+    window.addEventListener("storage", checkSaved);
+    const interval = setInterval(checkSaved, 1000);
+    return () => {
+      window.removeEventListener("storage", checkSaved);
+      clearInterval(interval);
+    };
+  }, []);
+
   const togglePanel = (panel: "downloads" | "saved") => {
     setOpenPanel((prev) => (prev === panel ? null : panel));
   };
@@ -513,7 +555,7 @@ export default function Header() {
       const supabase = createClient();
       const { data } = await supabase
         .from("nfts")
-        .select("id, title, image_url, product_image_url, creator, price, time_left, downloads, description, badge_text, file_size")
+        .select("id, title, image_url, product_image_url, icon_url, creator, price, time_left, downloads, description, badge_text, file_size")
         .eq("id", id)
         .single();
       if (data) {
@@ -523,6 +565,7 @@ export default function Header() {
           title: data.title,
           description: data.description,
           product_image_url: data.product_image_url,
+          icon_url: data.icon_url,
           creator: data.creator,
           price: data.price,
           timeLeft: data.time_left,
@@ -593,7 +636,13 @@ export default function Header() {
                   title="Saved"
                   aria-label="Saved"
                 >
-                  <Bookmark className="w-4.5 h-4.5 text-white/70 group-hover:text-white transition-colors" />
+                  <Bookmark
+                    className={`w-4.5 h-4.5 transition-colors ${
+                      hasSaved || openPanel === "saved"
+                        ? "text-yellow-400 fill-yellow-400"
+                        : "text-white/70 group-hover:text-white"
+                    }`}
+                  />
                 </button>
                 {openPanel === "saved" && (
                   <SavedPanel

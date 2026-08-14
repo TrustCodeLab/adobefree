@@ -17,6 +17,7 @@ export interface NFT {
   display_order: number;
   description?: string;
   product_image_url?: string;
+  icon_url?: string | null;
   downloads: number;
   badge_text?: string;
   file_size?: string;

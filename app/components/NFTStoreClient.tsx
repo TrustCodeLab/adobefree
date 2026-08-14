@@ -201,6 +201,7 @@ function CategorySection({
             title: (category.nfts.find(n => n.id === activeProduct.id) || activeProduct).title,
             description: (category.nfts.find(n => n.id === activeProduct.id) || activeProduct).description,
             product_image_url: (category.nfts.find(n => n.id === activeProduct.id) || activeProduct).product_image_url,
+            icon_url: (category.nfts.find(n => n.id === activeProduct.id) || activeProduct).icon_url,
             creator: (category.nfts.find(n => n.id === activeProduct.id) || activeProduct).creator,
             price: (category.nfts.find(n => n.id === activeProduct.id) || activeProduct).price,
             timeLeft: (category.nfts.find(n => n.id === activeProduct.id) || activeProduct).time_left,

@@ -125,7 +125,7 @@ export default function NFTCard({
             title="Save app"
           >
             <Bookmark
-              className={`w-3 h-3 sm:w-4 sm:h-4 transition-colors ${isLiked ? "text-white fill-white" : "text-white/70 group-hover/btn:text-white"}`}
+              className={`w-3 h-3 sm:w-4 sm:h-4 transition-colors ${isLiked ? "text-yellow-400 fill-yellow-400" : "text-white/70 group-hover/btn:text-white"}`}
             />
           </button>
         </div>
@@ -138,7 +138,7 @@ export default function NFTCard({
             {creator}
           </span>
           <div className="flex items-center justify-between">
-            <h3 className="text-[1rem] sm:text-[1.15rem] font-bold tracking-tight text-white leading-snug whitespace-nowrap" itemProp="name">
+            <h3 className="text-[1rem] sm:text-[1.15rem] font-semibold tracking-tight text-white leading-snug whitespace-nowrap" itemProp="name">
               {title}
             </h3>
             <div className="flex items-center gap-0.5 mt-0.5">
@@ -174,9 +174,9 @@ export default function NFTCard({
               e.stopPropagation(); // Prevent card click
               onDetailsClick(); // Open details modal
             }}
-            className="flex-1 min-w-0 bg-white hover:bg-white/90 text-black font-bold py-2 sm:py-2.5 rounded-full transition-all duration-300 text-[0.8rem] sm:text-[0.9rem] cursor-pointer flex items-center justify-center px-2 hover:scale-[1.02] active:scale-95 group/download"
+            className="flex-1 min-w-0 bg-emerald-500/10 hover:bg-emerald-500/20 text-white border border-emerald-500/20 hover:border-emerald-500/40 backdrop-blur-md font-medium py-2.5 sm:py-3 rounded-full transition-all duration-300 text-[0.8rem] sm:text-[0.9rem] cursor-pointer flex items-center justify-center px-2 hover:scale-[1.02] active:scale-95 group/download shadow-sm"
           >
-            <CloudDownload className="w-3.5 h-3.5 sm:w-4 sm:h-4 mr-1 sm:mr-1.5 flex-shrink-0 group-hover/download:animate-bounce" />
+            <CloudDownload className="w-3.5 h-3.5 sm:w-4 sm:h-4 mr-1 sm:mr-1.5 flex-shrink-0 text-white group-hover/download:animate-bounce" />
             <span className="truncate">Download</span>
           </button>
         </div>

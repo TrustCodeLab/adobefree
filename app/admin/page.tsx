@@ -307,13 +307,13 @@ export default async function AdminDashboard() {
                   className="p-4 flex items-center justify-between gap-4 hover:bg-[#242424]/60 transition-all duration-150 group"
                 >
                   <div className="flex items-center gap-3.5 min-w-0">
-                    <div className="relative w-14 h-14 sm:w-16 sm:h-16 rounded-xl overflow-hidden bg-[#141414] border border-[#2e2e2e] flex-shrink-0 group-hover:border-[#3ecf8e]/40 transition-colors">
-                      {app.image_url || app.product_image_url ? (
+                    <div className="relative w-14 h-14 sm:w-16 sm:h-16 rounded-xl overflow-hidden flex-shrink-0">
+                      {app.icon_url || app.product_image_url || app.image_url ? (
                         <Image
-                          src={app.image_url || app.product_image_url}
-                          alt={app.title || "App Image"}
+                          src={app.icon_url || app.product_image_url || app.image_url}
+                          alt={app.title || "App Icon"}
                           fill
-                          className="object-cover"
+                          className="object-contain"
                         />
                       ) : (
                         <div className="w-full h-full flex items-center justify-center text-[#6b7280] text-xs font-bold">

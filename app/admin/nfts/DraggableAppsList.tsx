@@ -13,6 +13,7 @@ interface NFT {
     price: string;
     image_url: string;
     product_image_url?: string | null;
+    icon_url?: string | null;
     display_order: number;
     category_id: string;
     categories?: { name: string };
@@ -117,13 +118,13 @@ export default function DraggableAppsList({
                             : "border-[#2e2e2e] hover:border-[#3ecf8e]/40 hover:bg-[#242424]/80"
                         }`}
                 >
-                    {/* Image Thumbnail / Icon Wallpaper */}
-                    <div className="relative w-16 h-16 sm:w-20 sm:h-20 rounded-xl overflow-hidden flex-shrink-0 bg-[#141414] border border-[#2e2e2e] group-hover:border-[#3ecf8e]/40 transition-colors">
+                    {/* App Icon Thumbnail */}
+                    <div className="relative w-16 h-16 sm:w-20 sm:h-20 rounded-xl overflow-hidden flex-shrink-0">
                         <Image
-                            src={nft.image_url || nft.product_image_url || ""}
+                            src={nft.icon_url || nft.product_image_url || nft.image_url || ""}
                             alt={nft.title}
                             fill
-                            className="object-cover"
+                            className="object-contain"
                         />
                     </div>
 

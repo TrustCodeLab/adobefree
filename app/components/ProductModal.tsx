@@ -12,6 +12,7 @@ interface ProductModalProps {
     title: string;
     description?: string;
     product_image_url?: string;
+    icon_url?: string | null;
     creator: string;
     price: string;
     timeLeft: string;
@@ -83,7 +84,7 @@ export default function ProductModal({ product, onClose }: ProductModalProps) {
       const newEntry = {
         id: product.id,
         title: product.title,
-        image: product.image,
+        image: product.icon_url || product.product_image_url || product.image,
         creator: product.creator,
         timestamp: Date.now(),
       };
@@ -152,7 +153,7 @@ export default function ProductModal({ product, onClose }: ProductModalProps) {
               title="Save app"
             >
               <Bookmark
-                className={`w-4 h-4 ${isLiked ? "fill-white text-white" : "text-white"}`}
+                className={`w-4 h-4 ${isLiked ? "text-yellow-400 fill-yellow-400" : "text-white"}`}
               />
             </button>
           </div>
@@ -172,7 +173,7 @@ export default function ProductModal({ product, onClose }: ProductModalProps) {
             <span className="text-[11px] sm:text-xs font-bold uppercase tracking-[0.14em] text-accent/90">
               {product.creator}
             </span>
-            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold tracking-tight text-white leading-tight" itemProp="name">
+            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-semibold tracking-tight text-white leading-tight" itemProp="name">
               {product.title}
             </h2>
             <div className="flex items-center gap-2 pt-3.5 flex-wrap">
@@ -222,9 +223,9 @@ export default function ProductModal({ product, onClose }: ProductModalProps) {
           <div className="pt-2">
             <button
               onClick={handleDownload}
-              className="w-full bg-white hover:bg-slate-100 text-black font-bold py-3.5 sm:py-4 rounded-full transition-all hover:scale-[1.01] active:scale-[0.99] cursor-pointer flex items-center justify-center gap-2 text-base sm:text-lg shadow-lg shadow-white/5 group"
+              className="w-full bg-emerald-500/10 hover:bg-emerald-500/20 text-white border border-emerald-500/20 hover:border-emerald-500/40 backdrop-blur-md font-medium py-3 sm:py-3.5 rounded-full transition-all hover:scale-[1.01] active:scale-[0.99] cursor-pointer flex items-center justify-center gap-2 text-base sm:text-lg shadow-lg shadow-black/30 group"
             >
-              <CloudDownload className="w-5 h-5 group-hover:animate-bounce" />
+              <CloudDownload className="w-5 h-5 text-white group-hover:animate-bounce" />
               Download Now
             </button>
             <p className="text-center text-white/40 text-xs font-medium mt-3 flex items-center justify-center gap-1.5">

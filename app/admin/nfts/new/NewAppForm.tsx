@@ -21,8 +21,10 @@ export default function NewAppForm({ categories }: NewAppFormProps) {
   const [productPreviewUrl, setProductPreviewUrl] = useState<string | null>(
     null,
   );
+  const [iconPreviewUrl, setIconPreviewUrl] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const productFileInputRef = useRef<HTMLInputElement>(null);
+  const iconFileInputRef = useRef<HTMLInputElement>(null);
   const router = useRouter();
 
   const [state, formAction, isPending] = useActionState(createNFT, {
@@ -55,6 +57,14 @@ export default function NewAppForm({ categories }: NewAppFormProps) {
     }
   };
 
+  const handleIconChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      const url = URL.createObjectURL(file);
+      setIconPreviewUrl(url);
+    }
+  };
+
   const clearPreview = () => {
     setPreviewUrl(null);
     if (fileInputRef.current) {
@@ -69,6 +79,13 @@ export default function NewAppForm({ categories }: NewAppFormProps) {
     }
   };
 
+  const clearIconPreview = () => {
+    setIconPreviewUrl(null);
+    if (iconFileInputRef.current) {
+      iconFileInputRef.current.value = "";
+    }
+  };
+
   const triggerFileInput = () => {
     fileInputRef.current?.click();
   };
@@ -77,18 +94,25 @@ export default function NewAppForm({ categories }: NewAppFormProps) {
     productFileInputRef.current?.click();
   };
 
+  const triggerIconFileInput = () => {
+    iconFileInputRef.current?.click();
+  };
+
   return (
     <form
       action={formAction}
       className="bg-[#1c1c1c] border border-[#2e2e2e] p-6 sm:p-8 rounded-xl space-y-6"
     >
-      {/* Dual Image Upload Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        {/* Card/Thumbnail Image */}
-        <div className="space-y-2">
-          <label className="text-xs font-semibold text-[#878c96] block">
-            Card Image (Thumbnail)
-          </label>
+      {/* 3-Way Asset Upload Grid */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6">
+        {/* 1. Card Banner */}
+        <div className="space-y-1.5 min-w-0">
+          <div>
+            <label className="text-xs font-semibold text-[#ededef] block truncate">
+              Card Banner <span className="text-red-400">*</span>
+            </label>
+            <p className="text-[11px] text-[#6b7280] truncate">Store card (5:3)</p>
+          </div>
 
           <input
             ref={fileInputRef}
@@ -104,7 +128,7 @@ export default function NewAppForm({ categories }: NewAppFormProps) {
             <div className="relative w-full aspect-[5/3] rounded-xl overflow-hidden group border-2 border-dashed border-[#2e2e2e] bg-[#141414]">
               <Image
                 src={previewUrl}
-                alt="Preview"
+                alt="Card Banner Preview"
                 fill
                 className="object-cover"
               />
@@ -130,26 +154,29 @@ export default function NewAppForm({ categories }: NewAppFormProps) {
               onClick={triggerFileInput}
               className="relative w-full aspect-[5/3] border-2 border-dashed border-[#2e2e2e] rounded-xl flex items-center justify-center text-center hover:border-[#3ecf8e]/50 transition-colors group cursor-pointer bg-[#141414] select-none"
             >
-              <div className="flex flex-col items-center gap-2 pointer-events-none p-4">
-                <div className="p-2.5 bg-[#242424] rounded-lg group-hover:bg-[#3ecf8e]/10 transition-colors">
-                  <ArrowUpTrayIcon className="w-5 h-5 text-[#6b7280] group-hover:text-[#3ecf8e]" />
+              <div className="flex flex-col items-center gap-2 pointer-events-none p-3 sm:p-4">
+                <div className="p-2 bg-[#242424] rounded-lg group-hover:bg-[#3ecf8e]/10 transition-colors">
+                  <ArrowUpTrayIcon className="w-4 h-4 sm:w-5 sm:h-5 text-[#6b7280] group-hover:text-[#3ecf8e]" />
                 </div>
-                <div className="space-y-0.5">
-                  <p className="text-[#ededef] font-semibold text-xs">
-                    Upload Thumbnail
+                <div className="space-y-0.5 min-w-0">
+                  <p className="text-[#ededef] font-semibold text-xs truncate">
+                    Upload Banner
                   </p>
-                  <p className="text-[#6b7280] text-[11px]">(5:3 Aspect Ratio)</p>
+                  <p className="text-[#6b7280] text-[10px] sm:text-[11px] truncate">5:3 Ratio</p>
                 </div>
               </div>
             </div>
           )}
         </div>
 
-        {/* Product/Details Image */}
-        <div className="space-y-2">
-          <label className="text-xs font-semibold text-[#878c96] block">
-            Product Image (Modal Cover)
-          </label>
+        {/* 2. Product Modal Cover */}
+        <div className="space-y-1.5 min-w-0">
+          <div>
+            <label className="text-xs font-semibold text-[#ededef] block truncate">
+              Modal Cover
+            </label>
+            <p className="text-[11px] text-[#6b7280] truncate">Popup detail image</p>
+          </div>
 
           <input
             ref={productFileInputRef}
@@ -190,16 +217,81 @@ export default function NewAppForm({ categories }: NewAppFormProps) {
               onClick={triggerProductFileInput}
               className="relative w-full aspect-[5/3] border-2 border-dashed border-[#2e2e2e] rounded-xl flex items-center justify-center text-center hover:border-[#3ecf8e]/50 transition-colors group cursor-pointer bg-[#141414] select-none"
             >
-              <div className="flex flex-col items-center gap-2 pointer-events-none p-4">
-                <div className="p-2.5 bg-[#242424] rounded-lg group-hover:bg-[#3ecf8e]/10 transition-colors">
-                  <ArrowUpTrayIcon className="w-5 h-5 text-[#6b7280] group-hover:text-[#3ecf8e]" />
+              <div className="flex flex-col items-center gap-2 pointer-events-none p-3 sm:p-4">
+                <div className="p-2 bg-[#242424] rounded-lg group-hover:bg-[#3ecf8e]/10 transition-colors">
+                  <ArrowUpTrayIcon className="w-4 h-4 sm:w-5 sm:h-5 text-[#6b7280] group-hover:text-[#3ecf8e]" />
                 </div>
-                <div className="space-y-0.5">
-                  <p className="text-[#ededef] font-semibold text-xs">
-                    Upload Product Cover
+                <div className="space-y-0.5 min-w-0">
+                  <p className="text-[#ededef] font-semibold text-xs truncate">
+                    Upload Cover
                   </p>
-                  <p className="text-[#6b7280] text-[11px]">
-                    (High Quality Recommended)
+                  <p className="text-[#6b7280] text-[10px] sm:text-[11px] truncate">
+                    Detail View
+                  </p>
+                </div>
+              </div>
+            </div>
+          )}
+        </div>
+
+        {/* 3. App Icon */}
+        <div className="space-y-1.5 min-w-0">
+          <div>
+            <label className="text-xs font-semibold text-[#ededef] block truncate">
+              App Icon
+            </label>
+            <p className="text-[11px] text-[#6b7280] truncate">Square logo (1:1)</p>
+          </div>
+
+          <input
+            ref={iconFileInputRef}
+            type="file"
+            name="icon"
+            className="hidden"
+            accept="image/*,.svg"
+            onChange={handleIconChange}
+          />
+
+          {iconPreviewUrl ? (
+            <div className="relative w-full aspect-[5/3] rounded-xl overflow-hidden group border-2 border-dashed border-[#2e2e2e] bg-[#141414]">
+              <Image
+                src={iconPreviewUrl}
+                alt="App Icon Preview"
+                fill
+                className="object-contain p-2"
+              />
+              <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-3">
+                <button
+                  type="button"
+                  onClick={clearIconPreview}
+                  className="p-2.5 bg-red-500/20 text-red-400 rounded-lg hover:bg-red-500 hover:text-white transition-colors"
+                >
+                  <XMarkIcon className="w-5 h-5" />
+                </button>
+                <button
+                  type="button"
+                  onClick={triggerIconFileInput}
+                  className="p-2.5 bg-[#242424] text-[#ededef] rounded-lg hover:bg-[#2a2a2a] transition-colors cursor-pointer border border-[#2e2e2e]"
+                >
+                  <ArrowUpTrayIcon className="w-5 h-5" />
+                </button>
+              </div>
+            </div>
+          ) : (
+            <div
+              onClick={triggerIconFileInput}
+              className="relative w-full aspect-[5/3] border-2 border-dashed border-[#2e2e2e] rounded-xl flex items-center justify-center text-center hover:border-[#3ecf8e]/50 transition-colors group cursor-pointer bg-[#141414] select-none"
+            >
+              <div className="flex flex-col items-center gap-2 pointer-events-none p-3 sm:p-4">
+                <div className="p-2 bg-[#242424] rounded-lg group-hover:bg-[#3ecf8e]/10 transition-colors">
+                  <ArrowUpTrayIcon className="w-4 h-4 sm:w-5 sm:h-5 text-[#6b7280] group-hover:text-[#3ecf8e]" />
+                </div>
+                <div className="space-y-0.5 min-w-0">
+                  <p className="text-[#ededef] font-semibold text-xs truncate">
+                    Upload Icon
+                  </p>
+                  <p className="text-[#6b7280] text-[10px] sm:text-[11px] truncate">
+                    1:1 Square
                   </p>
                 </div>
               </div>
