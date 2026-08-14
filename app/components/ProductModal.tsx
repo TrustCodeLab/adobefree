@@ -223,7 +223,7 @@ export default function ProductModal({ product, onClose }: ProductModalProps) {
           <div className="pt-2">
             <button
               onClick={handleDownload}
-              className="w-full bg-emerald-500/10 hover:bg-emerald-500/20 text-white border border-emerald-500/20 hover:border-emerald-500/40 backdrop-blur-md font-medium py-3 sm:py-3.5 rounded-full transition-all hover:scale-[1.01] active:scale-[0.99] cursor-pointer flex items-center justify-center gap-2 text-base sm:text-lg shadow-lg shadow-black/30 group"
+              className="w-full bg-emerald-500/30 hover:bg-emerald-500/40 text-white border border-emerald-500/50 hover:border-emerald-500/70 backdrop-blur-md font-medium py-3 sm:py-3.5 rounded-full transition-all hover:scale-[1.01] active:scale-[0.99] cursor-pointer flex items-center justify-center gap-2 text-base sm:text-lg shadow-lg shadow-black/30 group"
             >
               <CloudDownload className="w-5 h-5 text-white group-hover:animate-bounce" />
               Download Now
