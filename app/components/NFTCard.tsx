@@ -99,7 +99,7 @@ export default function NFTCard({
           />
           {/* Download Counter Badge */}
           <div className="absolute bottom-3 left-3 bg-white/10 text-white text-[0.65rem] sm:text-xs font-bold px-2.5 py-1 rounded-full shadow-lg border border-white/10 backdrop-blur-md flex items-center gap-1.5 z-10">
-            <CloudDownload className="w-3 h-3 text-accent" />
+            <CloudDownload className="w-3 h-3 text-white" />
             <span>{downloads > 0 ? downloads : "New"}</span>
           </div>
         </div>
