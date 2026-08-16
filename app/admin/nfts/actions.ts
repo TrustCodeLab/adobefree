@@ -24,6 +24,7 @@ export async function createNFT(prevState: ActionState, formData: FormData): Pro
         const price = formData.get('price') as string
         const category_id = formData.get('category_id') as string
         const time_left = formData.get('time_left') as string
+        const mac_url = formData.get('mac_url') as string
         const description = formData.get('description') as string
         const badge_text = formData.get('badge_text') as string
         const file_size = formData.get('file_size') as string
@@ -94,6 +95,7 @@ export async function createNFT(prevState: ActionState, formData: FormData): Pro
             price,
             category_id,
             time_left,
+            mac_url: mac_url || null,
             image_url: publicUrl,
             product_image_url: productImageUrl || null,
             icon_url: iconUrl || null,
@@ -155,6 +157,7 @@ export async function updateNFT(formData: FormData) {
     const price = formData.get('price') as string
     const category_id = formData.get('category_id') as string
     const time_left = formData.get('time_left') as string
+    const mac_url = formData.get('mac_url') as string
     const description = formData.get('description') as string
     const badge_text = formData.get('badge_text') as string
     const file_size = formData.get('file_size') as string
@@ -210,6 +213,7 @@ export async function updateNFT(formData: FormData) {
         price,
         category_id,
         time_left,
+        mac_url: mac_url || null,
         description,
         badge_text: badge_text || null,
         file_size: file_size || null,

@@ -84,8 +84,12 @@ export default function DraggableCategoryList({
   if (!categories || categories.length === 0) {
     return (
       <div className="p-8 rounded-xl bg-[#1c1c1c] border border-[#2e2e2e] text-center space-y-2">
-        <p className="text-[#ededef] font-semibold text-sm">No categories configured yet</p>
-        <p className="text-[#878c96] text-xs">Use the form above to add your first category.</p>
+        <p className="text-[#ededef] font-semibold text-sm">
+          No categories configured yet
+        </p>
+        <p className="text-[#878c96] text-xs">
+          Use the form above to add your first category.
+        </p>
       </div>
     );
   }
@@ -111,7 +115,7 @@ export default function DraggableCategoryList({
             <div className="p-1.5 rounded-lg bg-[#242424] border border-[#2e2e2e] text-[#6b7280] group-hover:text-[#3ecf8e] transition-colors">
               <Bars2Icon className="w-4 h-4" />
             </div>
-            
+
             <div className="flex items-center gap-2.5 flex-wrap min-w-0">
               <span className="text-[#ededef] font-bold text-sm group-hover:text-[#3ecf8e] transition-colors">
                 {cat.name}

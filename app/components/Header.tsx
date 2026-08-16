@@ -242,6 +242,7 @@ type ProductData = {
   creator: string;
   price: string;
   timeLeft: string;
+  macUrl?: string | null;
   downloads: number;
   badge_text?: string;
   file_size?: string;
@@ -555,7 +556,7 @@ export default function Header() {
       const supabase = createClient();
       const { data } = await supabase
         .from("nfts")
-        .select("id, title, image_url, product_image_url, icon_url, creator, price, time_left, downloads, description, badge_text, file_size")
+        .select("id, title, image_url, product_image_url, icon_url, creator, price, time_left, mac_url, downloads, description, badge_text, file_size")
         .eq("id", id)
         .single();
       if (data) {
@@ -569,6 +570,7 @@ export default function Header() {
           creator: data.creator,
           price: data.price,
           timeLeft: data.time_left,
+          macUrl: data.mac_url,
           downloads: data.downloads,
           badge_text: data.badge_text,
           file_size: data.file_size,

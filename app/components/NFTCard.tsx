@@ -174,9 +174,9 @@ export default function NFTCard({
               e.stopPropagation(); // Prevent card click
               onDetailsClick(); // Open details modal
             }}
-            className="flex-1 min-w-0 bg-emerald-500/15 hover:bg-emerald-500/25 text-white border border-emerald-500/30 hover:border-emerald-500/50 backdrop-blur-md font-medium py-2.5 sm:py-3 rounded-full transition-all duration-300 text-[0.8rem] sm:text-[0.9rem] cursor-pointer flex items-center justify-center px-2 hover:scale-[1.02] active:scale-95 group/download shadow-sm"
+            className="flex-1 min-w-0 bg-[#e4e4e7] hover:bg-white text-[#0f1115] border border-white/40 backdrop-blur-md font-semibold py-2.5 sm:py-3 rounded-full transition-all duration-300 text-[0.8rem] sm:text-[0.9rem] cursor-pointer flex items-center justify-center px-2 hover:scale-[1.02] active:scale-95 group/download shadow-sm"
           >
-            <CloudDownload className="w-3.5 h-3.5 sm:w-4 sm:h-4 mr-1 sm:mr-1.5 flex-shrink-0 text-white group-hover/download:animate-bounce" />
+            <CloudDownload className="w-3.5 h-3.5 sm:w-4 sm:h-4 mr-1 sm:mr-1.5 flex-shrink-0 text-[#0f1115] group-hover/download:animate-bounce" />
             <span className="truncate">Download</span>
           </button>
         </div>

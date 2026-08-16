@@ -1,6 +1,12 @@
 import { createClient } from "../../utils/supabase/server";
 import { addCategory } from "./actions";
-import { PlusIcon, FolderPlusIcon, FolderIcon, Bars2Icon, RectangleStackIcon } from "@heroicons/react/24/outline";
+import {
+  PlusIcon,
+  FolderPlusIcon,
+  FolderIcon,
+  Bars2Icon,
+  RectangleStackIcon,
+} from "@heroicons/react/24/outline";
 import DraggableCategoryList from "./DraggableCategoryList";
 
 export default async function CategoriesPage() {
@@ -22,7 +28,9 @@ export default async function CategoriesPage() {
               <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-[#3ecf8e]/10 text-[#3ecf8e] border border-[#3ecf8e]/20">
                 <FolderIcon className="w-3.5 h-3.5" /> App Taxonomy
               </span>
-              <span className="text-[#6b7280] text-xs font-medium">• Navigation Filters</span>
+              <span className="text-[#6b7280] text-xs font-medium">
+                • Navigation Filters
+              </span>
             </div>
             <h2 className="text-2xl sm:text-3xl font-bold text-[#ededef] tracking-tight">
               Category Management
@@ -38,8 +46,12 @@ export default async function CategoriesPage() {
               <RectangleStackIcon className="w-4 h-4" />
             </div>
             <div>
-              <p className="text-xs text-[#878c96] font-medium">Total Categories</p>
-              <p className="text-base font-bold text-[#ededef] leading-none">{totalCategories}</p>
+              <p className="text-xs text-[#878c96] font-medium">
+                Total Categories
+              </p>
+              <p className="text-base font-bold text-[#ededef] leading-none">
+                {totalCategories}
+              </p>
             </div>
           </div>
         </div>

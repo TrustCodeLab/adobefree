@@ -205,6 +205,7 @@ function CategorySection({
             creator: (category.nfts.find(n => n.id === activeProduct.id) || activeProduct).creator,
             price: (category.nfts.find(n => n.id === activeProduct.id) || activeProduct).price,
             timeLeft: (category.nfts.find(n => n.id === activeProduct.id) || activeProduct).time_left,
+            macUrl: (category.nfts.find(n => n.id === activeProduct.id) || activeProduct).mac_url,
             downloads: (category.nfts.find(n => n.id === activeProduct.id) || activeProduct).downloads,
             badge_text: (category.nfts.find(n => n.id === activeProduct.id) || activeProduct).badge_text,
             file_size: (category.nfts.find(n => n.id === activeProduct.id) || activeProduct).file_size,

@@ -35,12 +35,22 @@ export default async function AdminDashboard() {
     .from("support_requests")
     .select("*", { count: "exact", head: true });
 
-  // 2. Fetch Recent Apps (latest 6)
-  const { data: recentApps } = await supabase
+  // 2. Fetch Recent Apps (latest added apps first)
+  let { data: recentApps } = await supabase
     .from("nfts")
     .select("*, categories(name)")
-    .order("created_at", { ascending: false })
+    .order("display_order", { ascending: false })
     .limit(6);
+
+  // Fallback if join with categories table fails
+  if (!recentApps || recentApps.length === 0) {
+    const { data: fallbackApps } = await supabase
+      .from("nfts")
+      .select("*")
+      .order("display_order", { ascending: false })
+      .limit(6);
+    recentApps = fallbackApps;
+  }
 
   // 3. Fetch Categories & All Apps for Distribution
   const { data: categories } = await supabase
@@ -336,7 +346,7 @@ export default async function AdminDashboard() {
 
                       <div className="flex items-center gap-2 text-xs text-[#878c96] flex-wrap">
                         <span className="px-2 py-0.5 rounded-md bg-[#242424] text-[#ededef] font-medium text-[11px] border border-[#2e2e2e]">
-                          {app.categories?.name || "Uncategorized"}
+                          {app.categories?.name || categories?.find((c) => c.id === app.category_id)?.name || "Uncategorized"}
                         </span>
                         <span>•</span>
                         <span className="text-[#ededef] font-medium">{app.creator || "Adobe"}</span>

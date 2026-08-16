@@ -1,12 +1,54 @@
-import { login } from "@/app/login/actions";
+"use client";
+
+import { useState } from "react";
 import Image from "next/image";
 import { ShieldCheckIcon } from "@heroicons/react/24/outline";
+import { createClient } from "../utils/supabase/client";
+import { useRouter } from "next/navigation";
 
-export default async function LoginPage(props: {
-  searchParams: Promise<{ error?: string }>;
-}) {
-  const searchParams = await props.searchParams;
-  const error = searchParams.error;
+export default function LoginPage() {
+  const router = useRouter();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setError(null);
+    setLoading(true);
+
+    try {
+      // 1. Enforce restricted admin email
+      if (email.trim().toLowerCase() !== "trustjonathan.ug@gmail.com") {
+        setError("Access Denied: Restricted Email");
+        setLoading(false);
+        return;
+      }
+
+      // 2. Authenticate directly with Supabase
+      const supabase = createClient();
+      const { error: authError } = await supabase.auth.signInWithPassword({
+        email: email.trim(),
+        password,
+      });
+
+      if (authError) {
+        setError(authError.message);
+        setLoading(false);
+        return;
+      }
+
+      // 3. Success -> Route to Admin
+      router.push("/admin");
+      router.refresh();
+    } catch (err: unknown) {
+      console.error("Login exception:", err);
+      const errorMessage = err instanceof Error ? err.message : "An unexpected error occurred. Please try again.";
+      setError(errorMessage);
+      setLoading(false);
+    }
+  };
 
   return (
     <div
@@ -63,10 +105,10 @@ export default async function LoginPage(props: {
             borderColor: "#2e2e2e",
           }}
         >
-          {/* Error */}
+          {/* Error Message */}
           {error && (
             <div
-              className="px-4 py-3 rounded-lg text-sm text-center border"
+              className="px-4 py-3 rounded-lg text-sm text-center border animate-in fade-in duration-200"
               style={{
                 backgroundColor: "rgba(239,68,68,0.08)",
                 borderColor: "rgba(239,68,68,0.2)",
@@ -77,7 +119,7 @@ export default async function LoginPage(props: {
             </div>
           )}
 
-          <form action={login} className="space-y-5">
+          <form onSubmit={handleSubmit} className="space-y-5">
             {/* Email */}
             <div className="space-y-1.5">
               <label
@@ -92,8 +134,11 @@ export default async function LoginPage(props: {
                 name="email"
                 type="email"
                 required
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
                 placeholder="example@gmail.com"
-                className="login-input w-full rounded-lg py-2.5 px-4 text-sm font-medium transition-all focus:outline-none"
+                disabled={loading}
+                className="login-input w-full rounded-lg py-2.5 px-4 text-sm font-medium transition-all focus:outline-none disabled:opacity-50"
                 style={{
                   backgroundColor: "#141414",
                   border: "1px solid #2e2e2e",
@@ -116,8 +161,11 @@ export default async function LoginPage(props: {
                 name="password"
                 type="password"
                 required
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
                 placeholder="••••••••"
-                className="login-input w-full rounded-lg py-2.5 px-4 text-sm font-medium transition-all focus:outline-none"
+                disabled={loading}
+                className="login-input w-full rounded-lg py-2.5 px-4 text-sm font-medium transition-all focus:outline-none disabled:opacity-50"
                 style={{
                   backgroundColor: "#141414",
                   border: "1px solid #2e2e2e",
@@ -130,13 +178,40 @@ export default async function LoginPage(props: {
             <div className="pt-1">
               <button
                 type="submit"
-                className="w-full font-bold py-2.5 rounded-lg text-sm transition-all duration-200 cursor-pointer hover:opacity-90 active:scale-[0.98]"
+                disabled={loading}
+                className="w-full font-bold py-2.5 rounded-lg text-sm transition-all duration-200 cursor-pointer hover:opacity-90 active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
                 style={{
                   backgroundColor: "#3ecf8e",
                   color: "#141414",
                 }}
               >
-                Sign In
+                {loading ? (
+                  <>
+                    <svg
+                      className="animate-spin h-4 w-4 text-[#141414]"
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                    >
+                      <circle
+                        className="opacity-25"
+                        cx="12"
+                        cy="12"
+                        r="10"
+                        stroke="currentColor"
+                        strokeWidth="4"
+                      ></circle>
+                      <path
+                        className="opacity-75"
+                        fill="currentColor"
+                        d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                      ></path>
+                    </svg>
+                    <span>Signing in...</span>
+                  </>
+                ) : (
+                  <span>Sign In</span>
+                )}
               </button>
             </div>
           </form>
@@ -151,7 +226,7 @@ export default async function LoginPage(props: {
         </div>
       </div>
 
-      <style>{`
+      <style jsx>{`
         .login-input::placeholder {
           color: #4b5563;
         }

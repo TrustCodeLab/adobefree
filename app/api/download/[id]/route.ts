@@ -17,10 +17,12 @@ export async function GET(
     return NextResponse.json({ error: "Missing app ID" }, { status: 400 });
   }
 
-  // Fetch the NFT/app by ID to get the actual download URL
+  const os = request.nextUrl.searchParams.get("os") || "windows";
+
+  // Fetch the NFT/app by ID to get both download URLs
   const { data: nft, error } = await supabase
     .from("nfts")
-    .select("time_left, title")
+    .select("time_left, mac_url, title")
     .eq("id", id)
     .single();
 
@@ -28,7 +30,14 @@ export async function GET(
     return NextResponse.json({ error: "App not found" }, { status: 404 });
   }
 
-  if (!nft.time_left) {
+  // Select the correct URL based on OS
+  // Fall back to the other URL if the requested one is not set
+  const downloadUrl =
+    os === "mac"
+      ? (nft.mac_url || nft.time_left)
+      : (nft.time_left || nft.mac_url);
+
+  if (!downloadUrl) {
     return NextResponse.json(
       { error: "Download URL not configured" },
       { status: 404 },
@@ -45,5 +54,5 @@ export async function GET(
   }
 
   // Redirect directly to the download URL for maximum speed
-  return NextResponse.redirect(nft.time_left);
+  return NextResponse.redirect(downloadUrl);
 }

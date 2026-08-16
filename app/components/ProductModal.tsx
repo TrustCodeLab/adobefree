@@ -1,6 +1,6 @@
 "use client";
 
-import { X, DollarSign, CloudDownload, Share2, Bookmark, HardDrive, ShieldCheck } from "lucide-react";
+import { X, DollarSign, CloudDownload, Share2, Bookmark, HardDrive, ShieldCheck, ArrowRight } from "lucide-react";
 import Image from "next/image";
 import { toast } from "sonner";
 import { useState, useEffect } from "react";
@@ -16,6 +16,7 @@ interface ProductModalProps {
     creator: string;
     price: string;
     timeLeft: string;
+    macUrl?: string | null;
     downloads: number;
     badge_text?: string;
     file_size?: string;
@@ -23,13 +24,76 @@ interface ProductModalProps {
   onClose: () => void;
 }
 
+// Robust client OS detection helper
+function detectUserOS(): "windows" | "mac" {
+  if (typeof window === "undefined" || !window.navigator) return "windows";
+
+  const nav = window.navigator as any;
+
+  // 1. Check Modern Navigator UserAgentData Platform (Chrome, Edge, Brave, Chromium)
+  if (nav.userAgentData?.platform) {
+    const platform = String(nav.userAgentData.platform).toLowerCase();
+    if (platform.includes("mac") || platform.includes("ios") || platform.includes("darwin")) {
+      return "mac";
+    }
+    if (platform.includes("win")) {
+      return "windows";
+    }
+  }
+
+  // 2. Check navigator.platform fallback (Firefox, Safari, etc.)
+  const platform = String(nav.platform || "").toLowerCase();
+  if (
+    platform.includes("mac") ||
+    platform.includes("ipad") ||
+    platform.includes("iphone") ||
+    platform.includes("ipod") ||
+    platform.includes("darwin")
+  ) {
+    return "mac";
+  }
+  if (platform.includes("win")) {
+    return "windows";
+  }
+
+  // 3. Check navigator.userAgent string fallback
+  const userAgent = String(nav.userAgent || "").toLowerCase();
+  if (
+    userAgent.includes("macintosh") ||
+    userAgent.includes("mac os x") ||
+    userAgent.includes("ipad") ||
+    userAgent.includes("iphone") ||
+    userAgent.includes("ipod")
+  ) {
+    return "mac";
+  }
+
+  return "windows";
+}
+
 export default function ProductModal({ product, onClose }: ProductModalProps) {
   const [isVisible, setIsVisible] = useState(false);
   const [isLiked, setIsLiked] = useState(false);
+  const [selectedOS, setSelectedOS] = useState<"windows" | "mac">("windows");
+  const [showUnavailableModal, setShowUnavailableModal] = useState(false);
+
+  const isMac = selectedOS === "mac";
+  const hasWindowsUrl = Boolean(product?.timeLeft && product.timeLeft.trim() !== "");
+  const hasMacUrl = Boolean(product?.macUrl && product.macUrl.trim() !== "");
+
+  // Initial client-side auto-detection
+  useEffect(() => {
+    setSelectedOS(detectUserOS());
+  }, []);
 
   useEffect(() => {
     if (product) {
       setIsVisible(true);
+      setShowUnavailableModal(false);
+      // Auto-detect OS for the user's current environment
+      const detected = detectUserOS();
+      setSelectedOS(detected);
+
       const liked = localStorage.getItem(`liked-${product.id}`);
       if (liked) {
         setIsLiked(JSON.parse(liked));
@@ -38,8 +102,17 @@ export default function ProductModal({ product, onClose }: ProductModalProps) {
       }
     } else {
       setIsVisible(false);
+      setShowUnavailableModal(false);
     }
   }, [product]);
+
+  const handleSelectOS = (os: "windows" | "mac") => {
+    setSelectedOS(os);
+    const targetAvailable = os === "mac" ? hasMacUrl : hasWindowsUrl;
+    if (!targetAvailable) {
+      setShowUnavailableModal(true);
+    }
+  };
 
   if (!product) return null;
 
@@ -73,8 +146,10 @@ export default function ProductModal({ product, onClose }: ProductModalProps) {
   };
 
   const handleDownload = () => {
-    if (!product.timeLeft) {
-      toast.error("Download URL not set!");
+    const targetUrl = isMac ? product.macUrl : product.timeLeft;
+
+    if (!targetUrl || targetUrl.trim() === "") {
+      setShowUnavailableModal(true);
       return;
     }
 
@@ -93,12 +168,12 @@ export default function ProductModal({ product, onClose }: ProductModalProps) {
       localStorage.setItem("download-history", JSON.stringify([newEntry, ...filtered].slice(0, 20)));
     } catch {}
 
-    toast.success("Your download has started", {
+    toast.success(`Your ${isMac ? "macOS" : "Windows"} download has started`, {
       icon: <CloudDownload className="w-5 h-5 text-emerald-400 animate-bounce" />
     });
 
     setTimeout(() => {
-      window.location.href = `/api/download/${product.id}`;
+      window.location.href = `/api/download/${product.id}?os=${selectedOS}`;
     }, 400);
   };
 
@@ -221,14 +296,59 @@ export default function ProductModal({ product, onClose }: ProductModalProps) {
           </div>
 
           <div className="pt-2">
-            <button
-              onClick={handleDownload}
-              className="w-full bg-emerald-500/30 hover:bg-emerald-500/40 text-white border border-emerald-500/50 hover:border-emerald-500/70 backdrop-blur-md font-medium py-3 sm:py-3.5 rounded-full transition-all hover:scale-[1.01] active:scale-[0.99] cursor-pointer flex items-center justify-center gap-2 text-base sm:text-lg shadow-lg shadow-black/30 group"
-            >
-              <CloudDownload className="w-5 h-5 text-white group-hover:animate-bounce" />
-              Download Now
-            </button>
-            <p className="text-center text-white/40 text-xs font-medium mt-3 flex items-center justify-center gap-1.5">
+            <div className="flex items-center justify-start gap-2.5">
+              {/* OS Selection Toggle (Icons Only) */}
+              <div className="flex items-center p-1 bg-white/[0.05] border border-white/10 rounded-full backdrop-blur-md shrink-0">
+                <button
+                  type="button"
+                  onClick={() => handleSelectOS("windows")}
+                  className={`p-2.5 sm:p-3 rounded-full transition-all duration-200 cursor-pointer flex items-center justify-center ${
+                    selectedOS === "windows"
+                      ? "bg-emerald-500/20 text-emerald-400 border border-emerald-500/40"
+                      : "text-white/40 hover:text-white/80 border border-transparent hover:bg-white/5"
+                  }`}
+                  title="Windows"
+                  aria-label="Windows"
+                >
+                  <svg
+                    className="w-4 h-4 sm:w-4.5 sm:h-4.5 shrink-0"
+                    viewBox="0 0 24 24"
+                    fill="currentColor"
+                  >
+                    <path d="M0 3.449L9.75 2.1v9.451H0m10.949-9.602L24 0v11.4H10.949M0 12.6h9.75v9.451L0 20.699M10.949 12.6H24V24l-13.051-1.951" />
+                  </svg>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => handleSelectOS("mac")}
+                  className={`p-2.5 sm:p-3 rounded-full transition-all duration-200 cursor-pointer flex items-center justify-center ${
+                    selectedOS === "mac"
+                      ? "bg-emerald-500/20 text-emerald-400 border border-emerald-500/40"
+                      : "text-white/40 hover:text-white/80 border border-transparent hover:bg-white/5"
+                  }`}
+                  title="macOS"
+                  aria-label="macOS"
+                >
+                  <svg
+                    className="w-4 h-4 sm:w-4.5 sm:h-4.5 shrink-0"
+                    viewBox="0 0 24 24"
+                    fill="currentColor"
+                  >
+                    <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M15.97 7.17c.61-.75 1.04-1.8 0.91-2.85-.93.04-2.02.63-2.66 1.38-.57.65-1.06 1.7-0.93 2.73 1.03.08 2.07-.51 2.68-1.26z" />
+                  </svg>
+                </button>
+              </div>
+
+              {/* Download Button */}
+              <button
+                onClick={handleDownload}
+                className="bg-[#e4e4e7] hover:bg-white text-[#0f1115] border border-white/40 backdrop-blur-md font-semibold py-3 sm:py-3.5 min-w-[200px] sm:min-w-[230px] px-8 sm:px-10 rounded-full transition-all duration-200 hover:scale-[1.01] active:scale-[0.99] cursor-pointer flex items-center justify-center gap-2 text-sm sm:text-base lg:text-lg shadow-md shadow-black/20 group"
+              >
+                <CloudDownload className="w-5 h-5 text-[#0f1115] group-hover:animate-bounce shrink-0" />
+                <span>Download Now</span>
+              </button>
+            </div>
+            <p className="text-left text-white/40 text-xs font-medium mt-5 sm:mt-6 flex items-center justify-start gap-2 pl-1">
               <ShieldCheck className="w-3.5 h-3.5 text-emerald-400/80" />
               <span>Secure download directly from server</span>
             </p>
@@ -237,6 +357,105 @@ export default function ProductModal({ product, onClose }: ProductModalProps) {
 
         {/* Border Overlay */}
         <div className="absolute inset-0 rounded-[2rem] border border-white/10 pointer-events-none z-50" />
+
+        {/* OS Download Unavailable Clean Modal Popup */}
+        {showUnavailableModal && (
+          <div
+            className="absolute inset-0 z-[60] bg-black/85 backdrop-blur-xl rounded-[2rem] flex items-center justify-center p-4 sm:p-6 animate-in fade-in duration-200"
+            onClick={() => setShowUnavailableModal(false)}
+          >
+            <div
+              className="bg-[#0b0c0e] border border-white/[0.08] rounded-[2.25rem] sm:rounded-[2.5rem] p-7 sm:p-8 max-w-[360px] w-full shadow-[0_20px_50px_rgba(0,0,0,0.8)] relative overflow-hidden text-center"
+              onClick={(e) => e.stopPropagation()}
+            >
+              {/* Bottom Ambient Glow from reference card */}
+              <div className="absolute -bottom-16 -right-16 w-48 h-48 bg-[#3ecf8e]/20 rounded-full blur-3xl pointer-events-none" />
+              <div className="absolute -top-16 -left-16 w-36 h-36 bg-white/[0.03] rounded-full blur-2xl pointer-events-none" />
+
+              {/* Close Button */}
+              <button
+                onClick={() => setShowUnavailableModal(false)}
+                className="absolute top-5 right-5 w-8 h-8 rounded-full bg-white/[0.05] hover:bg-white/[0.1] border border-white/[0.08] flex items-center justify-center text-white/50 hover:text-white transition-all cursor-pointer"
+                aria-label="Close"
+              >
+                <X className="w-3.5 h-3.5" />
+              </button>
+
+              {/* 3D Glowing Glass Orb Icon (from reference design) */}
+              <div className="relative mx-auto w-18 h-18 mb-5 flex items-center justify-center">
+                <div className="absolute inset-0 bg-[#3ecf8e]/25 rounded-full blur-xl" />
+                <div className="relative w-16 h-16 rounded-full bg-gradient-to-b from-white/20 via-white/[0.05] to-transparent border border-white/25 backdrop-blur-xl flex items-center justify-center shadow-[inset_0_1px_1px_rgba(255,255,255,0.4)]">
+                  {/* Specular light highlight */}
+                  <div className="absolute top-1.5 left-3 w-4 h-2 rounded-full bg-white/50 blur-[0.5px]" />
+                  {selectedOS === "mac" ? (
+                    <svg className="w-7 h-7 text-white drop-shadow-[0_2px_6px_rgba(0,0,0,0.6)]" viewBox="0 0 24 24" fill="currentColor">
+                      <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M15.97 7.17c.61-.75 1.04-1.8 0.91-2.85-.93.04-2.02.63-2.66 1.38-.57.65-1.06 1.7-0.93 2.73 1.03.08 2.07-.51 2.68-1.26z" />
+                    </svg>
+                  ) : (
+                    <svg className="w-7 h-7 text-white drop-shadow-[0_2px_6px_rgba(0,0,0,0.6)]" viewBox="0 0 24 24" fill="currentColor">
+                      <path d="M0 3.449L9.75 2.1v9.451H0m10.949-9.602L24 0v11.4H10.949M0 12.6h9.75v9.451L0 20.699M10.949 12.6H24V24l-13.051-1.951" />
+                    </svg>
+                  )}
+                </div>
+              </div>
+
+              {/* Status Pill Tag */}
+              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/[0.04] border border-white/[0.08] text-[11px] font-medium text-white/70 mb-3 tracking-wide">
+                <span className="w-1.5 h-1.5 rounded-full bg-[#3ecf8e]" />
+                <span>{selectedOS === "mac" ? "macOS" : "Windows"} Build</span>
+              </div>
+
+              {/* High-End Typography Headline */}
+              <h3 className="text-xl sm:text-[22px] font-semibold text-white tracking-[-0.03em] leading-snug">
+                {selectedOS === "mac" ? "macOS Unavailable" : "Windows Unavailable"}
+              </h3>
+
+              {/* Subtext */}
+              <p className="text-white/50 text-[13px] leading-relaxed mt-2 mb-6 max-w-[260px] mx-auto font-normal">
+                A download for <span className="text-white font-medium">{selectedOS === "mac" ? "macOS" : "Windows"}</span> hasn&apos;t been uploaded yet for this app.
+              </p>
+
+              {/* Actions */}
+              {(selectedOS === "mac" ? hasWindowsUrl : hasMacUrl) ? (
+                <div className="space-y-3">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      const other = selectedOS === "mac" ? "windows" : "mac";
+                      setSelectedOS(other);
+                      setShowUnavailableModal(false);
+                      toast.success(`Switched to ${other === "mac" ? "macOS" : "Windows"} download`, {
+                        icon: <CloudDownload className="w-5 h-5 text-emerald-400 animate-bounce" />
+                      });
+                      setTimeout(() => {
+                        window.location.href = `/api/download/${product.id}?os=${other}`;
+                      }, 400);
+                    }}
+                    className="w-full bg-[#e4e4e7] hover:bg-white text-[#0f1115] font-semibold py-3 px-5 rounded-full transition-all duration-200 hover:scale-[1.01] active:scale-[0.99] text-sm cursor-pointer flex items-center justify-center gap-2 shadow-md shadow-white/5 group"
+                  >
+                    <span>Download for {selectedOS === "mac" ? "Windows" : "macOS"}</span>
+                    <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setShowUnavailableModal(false)}
+                    className="w-full text-xs font-medium text-white/40 hover:text-white/80 py-1 transition-colors cursor-pointer"
+                  >
+                    Dismiss
+                  </button>
+                </div>
+              ) : (
+                <button
+                  type="button"
+                  onClick={() => setShowUnavailableModal(false)}
+                  className="w-full bg-white/10 hover:bg-white/15 text-white font-semibold py-3 rounded-full transition-all text-sm cursor-pointer border border-white/10"
+                >
+                  Got it
+                </button>
+              )}
+            </div>
+          </div>
+        )}
       </article>
     </div>
   );

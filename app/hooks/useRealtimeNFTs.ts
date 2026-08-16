@@ -11,6 +11,7 @@ export interface NFT {
   creator: string;
   price: string;
   time_left: string;
+  mac_url?: string | null;
   image_url: string;
   category_id: string;
   created_at: string;
