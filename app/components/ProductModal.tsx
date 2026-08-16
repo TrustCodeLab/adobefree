@@ -342,7 +342,7 @@ export default function ProductModal({ product, onClose }: ProductModalProps) {
               {/* Download Button */}
               <button
                 onClick={handleDownload}
-                className="bg-[#e4e4e7] hover:bg-white text-[#0f1115] border border-white/40 backdrop-blur-md font-semibold py-3 sm:py-3.5 min-w-[200px] sm:min-w-[230px] px-8 sm:px-10 rounded-full transition-all duration-200 hover:scale-[1.01] active:scale-[0.99] cursor-pointer flex items-center justify-center gap-2 text-sm sm:text-base lg:text-lg shadow-md shadow-black/20 group"
+                className="bg-[#e4e4e7] hover:bg-white text-[#0f1115] border border-white/40 backdrop-blur-md font-semibold py-3 sm:py-3.5 min-w-[200px] sm:min-w-[230px] px-8 sm:px-10 rounded-full transition-colors duration-200 cursor-pointer flex items-center justify-center gap-2 text-sm sm:text-base lg:text-lg shadow-md shadow-black/20 group"
               >
                 <CloudDownload className="w-5 h-5 text-[#0f1115] group-hover:animate-bounce shrink-0" />
                 <span>Download Now</span>
@@ -431,7 +431,7 @@ export default function ProductModal({ product, onClose }: ProductModalProps) {
                         window.location.href = `/api/download/${product.id}?os=${other}`;
                       }, 400);
                     }}
-                    className="w-full bg-[#e4e4e7] hover:bg-white text-[#0f1115] font-semibold py-3 px-5 rounded-full transition-all duration-200 hover:scale-[1.01] active:scale-[0.99] text-sm cursor-pointer flex items-center justify-center gap-2 shadow-md shadow-white/5 group"
+                    className="w-full bg-[#e4e4e7] hover:bg-white text-[#0f1115] font-semibold py-3 px-5 rounded-full transition-colors duration-200 text-sm cursor-pointer flex items-center justify-center gap-2 shadow-md shadow-white/5 group"
                   >
                     <span>Download for {selectedOS === "mac" ? "Windows" : "macOS"}</span>
                     <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
