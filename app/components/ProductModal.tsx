@@ -5,23 +5,25 @@ import Image from "next/image";
 import { toast } from "sonner";
 import { useState, useEffect } from "react";
 
+export interface ProductData {
+  id: string;
+  image: string;
+  title: string;
+  description?: string;
+  product_image_url?: string;
+  icon_url?: string | null;
+  creator: string;
+  price: string;
+  timeLeft: string;
+  macUrl?: string | null;
+  downloads: number;
+  badge_text?: string;
+  file_size?: string;
+  mac_file_size?: string | null;
+}
+
 interface ProductModalProps {
-  product: {
-    id: string;
-    image: string;
-    title: string;
-    description?: string;
-    product_image_url?: string;
-    icon_url?: string | null;
-    creator: string;
-    price: string;
-    timeLeft: string;
-    macUrl?: string | null;
-    downloads: number;
-    badge_text?: string;
-    file_size?: string;
-    mac_file_size?: string;
-  } | null;
+  product: ProductData | null;
   onClose: () => void;
 }
 
