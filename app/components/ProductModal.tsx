@@ -301,45 +301,47 @@ export default function ProductModal({ product, onClose }: ProductModalProps) {
           <div className="pt-2">
             <div className="flex items-center justify-start gap-2.5">
               {/* OS Selection Toggle (Icons Only) */}
-              <div className="flex items-center p-1 bg-white/[0.05] border border-white/10 rounded-full backdrop-blur-md shrink-0">
+              <div className="flex items-center justify-center gap-1.5 p-1 bg-white/[0.05] border border-white/10 rounded-full backdrop-blur-md shrink-0">
                 <button
                   type="button"
                   onClick={() => handleSelectOS("windows")}
-                  className={`p-2.5 sm:p-3 rounded-full transition-all duration-200 cursor-pointer flex items-center justify-center ${
+                  className={`w-10 h-10 sm:w-11 sm:h-11 rounded-full transition-all duration-200 cursor-pointer flex items-center justify-center shrink-0 ${
                     selectedOS === "windows"
-                      ? "bg-emerald-500/20 text-emerald-400 border border-emerald-500/40"
+                      ? "bg-emerald-500/20 text-emerald-400 border border-emerald-500/40 shadow-sm"
                       : "text-white/40 hover:text-white/80 border border-transparent hover:bg-white/5"
                   }`}
                   title="Windows"
                   aria-label="Windows"
                 >
                   <svg
-                    className="w-4 h-4 sm:w-4.5 sm:h-4.5 shrink-0"
+                    className="w-4.5 h-4.5 sm:w-5 sm:h-5 shrink-0"
                     viewBox="0 0 24 24"
                     fill="currentColor"
                   >
-                    <path d="M0 3.449L9.75 2.1v9.451H0m10.949-9.602L24 0v11.4H10.949M0 12.6h9.75v9.451L0 20.699M10.949 12.6H24V24l-13.051-1.951" />
+                    <path d="M0 0h11.377v11.372H0zm12.623 0H24v11.372H12.623zM0 12.623h11.377V24H0zm12.623 0H24V24H12.623z" />
                   </svg>
                 </button>
-                <button
-                  type="button"
-                  onClick={() => handleSelectOS("mac")}
-                  className={`p-2.5 sm:p-3 rounded-full transition-all duration-200 cursor-pointer flex items-center justify-center ${
-                    selectedOS === "mac"
-                      ? "bg-emerald-500/20 text-emerald-400 border border-emerald-500/40"
-                      : "text-white/40 hover:text-white/80 border border-transparent hover:bg-white/5"
-                  }`}
-                  title="macOS"
-                  aria-label="macOS"
-                >
-                  <svg
-                    className="w-4 h-4 sm:w-4.5 sm:h-4.5 shrink-0"
-                    viewBox="0 0 24 24"
-                    fill="currentColor"
+                {hasMacUrl && (
+                  <button
+                    type="button"
+                    onClick={() => handleSelectOS("mac")}
+                    className={`w-10 h-10 sm:w-11 sm:h-11 rounded-full transition-all duration-200 cursor-pointer flex items-center justify-center shrink-0 ${
+                      selectedOS === "mac"
+                        ? "bg-emerald-500/20 text-emerald-400 border border-emerald-500/40 shadow-sm"
+                        : "text-white/40 hover:text-white/80 border border-transparent hover:bg-white/5"
+                    }`}
+                    title="macOS"
+                    aria-label="macOS"
                   >
-                    <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M15.97 7.17c.61-.75 1.04-1.8 0.91-2.85-.93.04-2.02.63-2.66 1.38-.57.65-1.06 1.7-0.93 2.73 1.03.08 2.07-.51 2.68-1.26z" />
-                  </svg>
-                </button>
+                    <svg
+                      className="w-4.5 h-4.5 sm:w-5 sm:h-5 shrink-0"
+                      viewBox="0 0 24 24"
+                      fill="currentColor"
+                    >
+                      <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M15.97 7.17c.61-.75 1.04-1.8 0.91-2.85-.93.04-2.02.63-2.66 1.38-.57.65-1.06 1.7-0.93 2.73 1.03.08 2.07-.51 2.68-1.26z" />
+                    </svg>
+                  </button>
+                )}
               </div>
 
               {/* Download Button */}
@@ -396,7 +398,7 @@ export default function ProductModal({ product, onClose }: ProductModalProps) {
                     </svg>
                   ) : (
                     <svg className="w-7 h-7 text-white drop-shadow-[0_2px_6px_rgba(0,0,0,0.6)]" viewBox="0 0 24 24" fill="currentColor">
-                      <path d="M0 3.449L9.75 2.1v9.451H0m10.949-9.602L24 0v11.4H10.949M0 12.6h9.75v9.451L0 20.699M10.949 12.6H24V24l-13.051-1.951" />
+                      <path d="M0 0h11.377v11.372H0zm12.623 0H24v11.372H12.623zM0 12.623h11.377V24H0zm12.623 0H24V24H12.623z" />
                     </svg>
                   )}
                 </div>
