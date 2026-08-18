@@ -221,13 +221,13 @@ export default function ProductModal({ product, onClose }: ProductModalProps) {
           <div className="absolute bottom-6 right-6 z-10 flex items-center gap-3">
             <button
               onClick={handleShare}
-              className="w-10 h-10 rounded-full bg-black/40 border border-white/10 flex items-center justify-center transition-all hover:bg-accent hover:border-accent hover:scale-110 backdrop-blur-md cursor-pointer"
+              className="w-10 h-10 rounded-full bg-black/40 border border-white/10 flex items-center justify-center transition-all hover:bg-white/15 hover:border-white/30 hover:scale-110 backdrop-blur-md cursor-pointer"
             >
               <Share2 className="w-4 h-4 text-white" />
             </button>
             <button
               onClick={handleLike}
-              className="w-10 h-10 rounded-full bg-black/40 border border-white/10 flex items-center justify-center transition-all hover:bg-accent hover:border-accent hover:scale-110 backdrop-blur-md cursor-pointer"
+              className="w-10 h-10 rounded-full bg-black/40 border border-white/10 flex items-center justify-center transition-all hover:bg-white/15 hover:border-white/30 hover:scale-110 backdrop-blur-md cursor-pointer"
               title="Save app"
             >
               <Bookmark
@@ -307,7 +307,7 @@ export default function ProductModal({ product, onClose }: ProductModalProps) {
                   onClick={() => handleSelectOS("windows")}
                   className={`w-10 h-10 sm:w-11 sm:h-11 rounded-full transition-all duration-200 cursor-pointer flex items-center justify-center shrink-0 ${
                     selectedOS === "windows"
-                      ? "bg-emerald-500/20 text-emerald-400 border border-emerald-500/40 shadow-sm"
+                      ? "bg-white/15 text-white border border-white/20 shadow-sm"
                       : "text-white/40 hover:text-white/80 border border-transparent hover:bg-white/5"
                   }`}
                   title="Windows"
@@ -327,7 +327,7 @@ export default function ProductModal({ product, onClose }: ProductModalProps) {
                     onClick={() => handleSelectOS("mac")}
                     className={`w-10 h-10 sm:w-11 sm:h-11 rounded-full transition-all duration-200 cursor-pointer flex items-center justify-center shrink-0 ${
                       selectedOS === "mac"
-                        ? "bg-emerald-500/20 text-emerald-400 border border-emerald-500/40 shadow-sm"
+                        ? "bg-white/15 text-white border border-white/20 shadow-sm"
                         : "text-white/40 hover:text-white/80 border border-transparent hover:bg-white/5"
                     }`}
                     title="macOS"

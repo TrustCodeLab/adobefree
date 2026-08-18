@@ -110,7 +110,7 @@ export default function NFTCard({
             onClick={handleShare}
             className={`w-7 h-7 sm:w-9 sm:h-9 rounded-full bg-[#1c1e26] border border-white/10 flex items-center justify-center transition-all duration-300 hover:scale-110 cursor-pointer group/btn ${isShared
               ? "bg-green-500/20 border-green-500 text-green-500"
-              : "hover:bg-accent hover:border-accent"
+              : "hover:bg-white/15 hover:border-white/30"
               }`}
           >
             {isShared ? (
@@ -121,7 +121,7 @@ export default function NFTCard({
           </button>
           <button
             onClick={handleLike}
-            className="w-7 h-7 sm:w-9 sm:h-9 rounded-full bg-[#1c1e26] border border-white/10 flex items-center justify-center transition-all duration-300 hover:scale-110 hover:bg-accent hover:border-accent cursor-pointer group/btn"
+            className="w-7 h-7 sm:w-9 sm:h-9 rounded-full bg-[#1c1e26] border border-white/10 flex items-center justify-center transition-all duration-300 hover:scale-110 hover:bg-white/15 hover:border-white/30 cursor-pointer group/btn"
             title="Save app"
           >
             <Bookmark
