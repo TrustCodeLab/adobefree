@@ -22,6 +22,7 @@ export interface NFT {
   downloads: number;
   badge_text?: string;
   file_size?: string;
+  mac_file_size?: string | null;
 }
 
 export interface Category {

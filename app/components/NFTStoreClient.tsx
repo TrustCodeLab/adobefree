@@ -209,6 +209,7 @@ function CategorySection({
             downloads: (category.nfts.find(n => n.id === activeProduct.id) || activeProduct).downloads,
             badge_text: (category.nfts.find(n => n.id === activeProduct.id) || activeProduct).badge_text,
             file_size: (category.nfts.find(n => n.id === activeProduct.id) || activeProduct).file_size,
+            mac_file_size: (category.nfts.find(n => n.id === activeProduct.id) || activeProduct).mac_file_size,
           }
         }
         onClose={() => setActiveProduct(null)}

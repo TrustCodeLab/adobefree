@@ -80,6 +80,7 @@ export default function RootLayout({
     <html lang="en">
       <body
         className={`${manrope.variable} font-sans antialiased`}
+        suppressHydrationWarning
       >
         <script
           type="application/ld+json"

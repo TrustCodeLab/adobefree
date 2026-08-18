@@ -20,6 +20,7 @@ interface ProductModalProps {
     downloads: number;
     badge_text?: string;
     file_size?: string;
+    mac_file_size?: string;
   } | null;
   onClose: () => void;
 }
@@ -274,14 +275,14 @@ export default function ProductModal({ product, onClose }: ProductModalProps) {
               </div>
 
               {/* File Size */}
-              {product.file_size && (
+              {(isMac ? (product.mac_file_size || product.file_size) : product.file_size) && (
                 <div className="px-3 py-1.5 rounded-full bg-white/5 border border-white/10 flex items-center gap-1.5">
                   <HardDrive
                     className="w-3.5 h-3.5 text-white/70"
                     strokeWidth={2}
                   />
                   <span className="text-white/80 font-medium text-xs sm:text-sm">
-                    {product.file_size}
+                    {isMac ? (product.mac_file_size || product.file_size) : product.file_size}
                   </span>
                 </div>
               )}

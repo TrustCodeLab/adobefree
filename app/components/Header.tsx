@@ -246,6 +246,7 @@ type ProductData = {
   downloads: number;
   badge_text?: string;
   file_size?: string;
+  mac_file_size?: string;
 };
 
 // ── Downloads Panel ───────────────────────────────────────────────────────
@@ -556,7 +557,7 @@ export default function Header() {
       const supabase = createClient();
       const { data } = await supabase
         .from("nfts")
-        .select("id, title, image_url, product_image_url, icon_url, creator, price, time_left, mac_url, downloads, description, badge_text, file_size")
+        .select("id, title, image_url, product_image_url, icon_url, creator, price, time_left, mac_url, downloads, description, badge_text, file_size, mac_file_size")
         .eq("id", id)
         .single();
       if (data) {
@@ -574,6 +575,7 @@ export default function Header() {
           downloads: data.downloads,
           badge_text: data.badge_text,
           file_size: data.file_size,
+          mac_file_size: data.mac_file_size,
         });
         setOpenPanel(null); // Close dropdown panel when modal opens
       }
